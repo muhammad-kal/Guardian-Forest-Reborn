@@ -29,6 +29,24 @@ public class LadangManager : MonoBehaviour
         state = LadangState.Kosong;
     }
 
+    [NaughtyAttributes.Button]
+    public void SemuaTanahTertanam() // <-- Cheat Semua Tertanam
+    {
+        for(int i = 0;i <  listTanahLadang.Count;i++)
+        {
+            TaburBibit(listTanahLadang[i]);
+        }
+    }
+
+    [NaughtyAttributes.Button]
+    public void SemuaTanahTersiram() // <- Cheat Juga
+    {
+        for(int i = 0; i< listTanahLadang.Count; i++)
+        {
+            SiramAir(listTanahLadang[i]);
+        }
+    }
+
     private void GetSemuaTanah()
     {
         for (int i = 0; i < tanahParent.childCount; i++)
