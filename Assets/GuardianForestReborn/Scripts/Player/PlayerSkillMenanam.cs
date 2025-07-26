@@ -11,6 +11,7 @@ public class PlayerSkillMenanam : MonoBehaviour
     private PlayerAnimator animatorController;
     private LadangManager ladangManager;
     private PlayerAlatSelctor playerAlatSelector;
+    private PlayerController playerController;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,7 @@ public class PlayerSkillMenanam : MonoBehaviour
         
         animatorController = GetComponent<PlayerAnimator>();
         playerAlatSelector = GetComponent<PlayerAlatSelctor>();
+        playerController = GetComponent<PlayerController>();
 
         //subscribe BibitCollision
         BibitCollision.bibitOnCollision += BibitCollidedCallback;
@@ -65,19 +67,23 @@ public class PlayerSkillMenanam : MonoBehaviour
 
     private void Menanam(LadangManager other)
     {
-    
-        if (other.tag == "Ladang" && other.GetComponent<LadangManager>().isLadangKosong() && playerAlatSelector.PilihBibit())
+
+        if (other.tag == "Ladang" && other.GetComponent<LadangManager>().isLadangKosong() && playerAlatSelector.PilihBibit() && playerController.actionActive)
         {
             animatorController.PlayMenanam();
             ladangManager = other.GetComponent<LadangManager>();
             //disini bisa munculin tombol diatas
         }
-        else BerhentiMenanam();
+        else
+        {
+            BerhentiMenanam();
+            if (!other.GetComponent<LadangManager>().isLadangPenuh())
+                playerController.actionActive = false;
+        }
         /*
          Bisa gini juga
         if (other.CompareTag(..string
          */
-
     }
 
     private void BerhentiMenanam()
@@ -88,7 +94,6 @@ public class PlayerSkillMenanam : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         Menanam(other.GetComponent<LadangManager>());
-        
     }
 
     private void OnTriggerExit(Collider other)

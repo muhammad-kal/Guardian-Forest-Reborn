@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,14 +18,13 @@ public class PlayerController : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float kecepatan;
 
+    public bool actionActive = false;
+
 
 
     private void Start()
     {
         karakterKontroller = GetComponent<CharacterController>();
-        
-        
-
     }
 
     private void Update()
@@ -34,21 +34,17 @@ public class PlayerController : MonoBehaviour
 
     private void MovementManager()
     {
-        Vector3 pergerakan = new Vector3(analog.GetBergerak.x * kecepatan * Time.deltaTime/Screen.width, transform.position.y, transform.position.z);
+        Vector3 pergerakan = new Vector3(analog.GetBergerak.x * kecepatan * Time.deltaTime / Screen.width, transform.position.y, transform.position.z);
         pergerakan.y = 0;
         pergerakan.z = 0;
 
         if (pergerakan.x > 0)
         {
-            Flip(true,semuaPartikel);
-
-            
-
+            Flip(true, semuaPartikel);
         }
         else if (pergerakan.x < 0)
         {
             Flip(false, semuaPartikel);
-            
         }
         karakterKontroller.Move(pergerakan);
         playerAnimator.AnimasiManager(pergerakan);
@@ -60,22 +56,16 @@ public class PlayerController : MonoBehaviour
         float kiri = 270;
         float posisiZPartikel = isKanan ? 0.74f : -0.74f;
         Transform childRender = gameObject.transform.GetChild(0);
-        for(int i = 0; i < partikelTerkait.Length ; i++)
+        for (int i = 0; i < partikelTerkait.Length; i++)
         {
             if (isKanan)
             {
-
-
                 childRender.rotation = Quaternion.Euler(0, kanan, 0);
 
                 partikelTerkait[i].transform.rotation = (Quaternion.Euler(0, 60, 0));
                 Vector3 pos = partikelTerkait[i].transform.localPosition;
                 pos.x = Mathf.Abs(pos.x); // pastikan di kanan
                 partikelTerkait[i].transform.localPosition = pos;
-
-
-
-
             }
             else
             {
@@ -84,14 +74,11 @@ public class PlayerController : MonoBehaviour
                 Vector3 pos = partikelTerkait[i].transform.localPosition;
                 pos.x = -Mathf.Abs(pos.x); // pastikan di kiri
                 partikelTerkait[i].transform.localPosition = pos;
-
-
             }
         }
-
-
-
-        
     }
-
+    public void Action()
+    {
+        actionActive = true;
+    }
 }
