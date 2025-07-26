@@ -12,7 +12,7 @@ public class PlayerInteraksiTanamanShader : MonoBehaviour
     {
         for(int i = 0; i < material.Length; i++)
         {
-            material[i].SetVector("_PosisiPlayer_shader", transform.position);
+            material[i].SetVector("_PosisiPlayer_shader ", transform.position);
         }
     }
 
