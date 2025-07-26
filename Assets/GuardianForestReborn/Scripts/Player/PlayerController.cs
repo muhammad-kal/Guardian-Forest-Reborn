@@ -13,6 +13,11 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem[] semuaPartikel;
 
     private CharacterController karakterKontroller;
+    private PlayerAlatSelctor playerAlatSelector;
+    private PlayerSkillMenanam playerSkillMenanam;
+    private PlayerSkillMenyiram playerSkillMenyiram;
+    private string alat;
+
 
 
     [Header("Settings")]
@@ -25,6 +30,23 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         karakterKontroller = GetComponent<CharacterController>();
+        playerAlatSelector = GetComponent<PlayerAlatSelctor>();
+        playerSkillMenanam = GetComponent<PlayerSkillMenanam>();
+        playerSkillMenyiram = GetComponent<PlayerSkillMenyiram>();
+
+        playerAlatSelector.actionPilihAlat += AlatTerpilihCallback;
+
+    }
+    private void OnDestroy()
+    {
+        playerAlatSelector.actionPilihAlat -= AlatTerpilihCallback;
+
+    }
+    private void AlatTerpilihCallback(PlayerAlatSelctor.Alat alatTerpilih)
+    {
+        Debug.Log(alatTerpilih.ToString());
+        actionActive = false;
+        alat = alatTerpilih.ToString();
     }
 
     private void Update()
@@ -80,5 +102,20 @@ public class PlayerController : MonoBehaviour
     public void Action()
     {
         actionActive = true;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        actionActive = false;
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (alat == "Bibit")
+        {
+            playerSkillMenanam.Menanam(other.GetComponent<LadangManager>());
+        }
+        else if (alat == "Air")
+        {
+            playerSkillMenyiram.Menyiram(other.GetComponent<LadangManager>());
+        }
     }
 }

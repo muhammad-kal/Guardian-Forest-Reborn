@@ -58,14 +58,7 @@ public class PlayerSkillMenanam : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        ladangManager = other.GetComponent<LadangManager>();
-        Menanam(ladangManager);  
-
-    }
-
-    private void Menanam(LadangManager other)
+    public void Menanam(LadangManager other)
     {
 
         if (other.tag == "Ladang" && other.GetComponent<LadangManager>().isLadangKosong() && playerAlatSelector.PilihBibit() && playerController.actionActive)
@@ -89,11 +82,6 @@ public class PlayerSkillMenanam : MonoBehaviour
     private void BerhentiMenanam()
     {
         animatorController.StopMenanam();
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        Menanam(other.GetComponent<LadangManager>());
     }
 
     private void OnTriggerExit(Collider other)

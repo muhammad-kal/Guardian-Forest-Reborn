@@ -62,14 +62,7 @@ public class PlayerSkillMenyiram : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        ladangManager = other.GetComponent<LadangManager>();
-        MemasukiLadang(ladangManager);
-
-    }
-
-    private void MemasukiLadang(LadangManager other)
+    public void Menyiram(LadangManager other)
     {
 
         if (other.tag == "Ladang" && other.GetComponent<LadangManager>().isLadangPenuh() && playerAlatSelector.PilihSiram() && playerController.actionActive)
@@ -95,11 +88,11 @@ public class PlayerSkillMenyiram : MonoBehaviour
         animatorController.StopMenyiram();
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        MemasukiLadang(other.GetComponent<LadangManager>());
+    // private void OnTriggerStay(Collider other)
+    // {
+    //     MemasukiLadang(other.GetComponent<LadangManager>());
 
-    }
+    // }
 
     private void OnTriggerExit(Collider other)
     {
