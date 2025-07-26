@@ -5514,7 +5514,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 840995373}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: Lompat
+        m_MethodName: Action
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6625,6 +6625,7 @@ MonoBehaviour:
   semuaPartikel:
   - {fileID: 1198437823}
   kecepatan: 150
+  actionActive: 0
 --- !u!114 &840995374
 MonoBehaviour:
   m_ObjectHideFlags: 0
