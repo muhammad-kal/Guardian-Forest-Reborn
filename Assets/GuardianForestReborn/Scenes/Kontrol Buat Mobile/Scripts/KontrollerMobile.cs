@@ -14,21 +14,23 @@ public class KontrollerMobile : MonoBehaviour
     [SerializeField] float sensitivitas;
     private Vector3 bergerak;
     Vector3 posisiKlikAwal;
-
+    private Vector3 posisiAwalAnalogOutline;
+    private Vector3 posisiAwalPentil;
 
     [HideInInspector] public Vector3 GetBergerak => bergerak;
     [HideInInspector] public float magnitudePergerakan;
+
+    private void Start()
+    {
+        posisiAwalAnalogOutline = analogOutline.position;
+        posisiAwalPentil = pentil.position;
+    }
 
     private void Update()
     {
         if (bisaKontrol)
             ControlAnalog();
 
-    }
-
-    private void Start()
-    {
-        HideAnalog();
     }
 
     public void KlikDalamZonaCallback()
@@ -47,11 +49,15 @@ public class KontrollerMobile : MonoBehaviour
 
     private void HideAnalog()
     {
-        analogOutline.gameObject.SetActive(false);
+        // Tetap terlihat, hanya reset posisinya
+        analogOutline.position = posisiAwalAnalogOutline;
+        pentil.position = posisiAwalPentil;
+
         bisaKontrol = false;
         magnitudePergerakan = 0;
         bergerak = Vector3.zero;
     }
+
 
     private void ControlAnalog()
     {
