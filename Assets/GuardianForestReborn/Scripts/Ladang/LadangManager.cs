@@ -106,7 +106,7 @@ public class LadangManager : MonoBehaviour
 
     private void TanahTersiramSemua()
     {
-        Debug.Log("Tanah Tersiram Semua");
+        Debug.Log("Tanah Tersiram Semua");  
         state = LadangState.Tersiram;
         semuaLadangTersiram?.Invoke(this);
     }
