@@ -101,11 +101,15 @@ public class SpotPohon : MonoBehaviour
             Tumbuh();
         }
     }
+    public void debug()
+    {
+        Debug.Log("k");
+    }
 
     private void Tumbuh()
     {
         pohonAsli.gameObject.LeanScale(Vector3.one * 0.1f, 1f).setEase(LeanTweenType.easeInOutBack).setOnComplete(()
             => pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 10f));
-        
+
     }
 }

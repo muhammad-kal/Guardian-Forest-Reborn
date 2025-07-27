@@ -84,6 +84,11 @@ public class PlayerSkillMenyiram : MonoBehaviour
          */
     }
 
+    public void MenyiramApi(SpotPohon other)
+    {
+        Debug.Log("a");
+        other.debug();
+    }
     private void BerhentiMenyiram()
     {
         animatorController.StopMenyiram();

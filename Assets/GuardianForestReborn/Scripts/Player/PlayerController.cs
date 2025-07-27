@@ -127,6 +127,10 @@ public class PlayerController : MonoBehaviour
         }
         else if (alat == "Air")
         {
+            if (other.gameObject.name == "TanamZone")
+            {
+                playerSkillMenyiram.MenyiramApi(other.GetComponentInParent<SpotPohon>());
+            }
             playerSkillMenyiram.Menyiram(other.GetComponent<LadangManager>());
         }
     }
