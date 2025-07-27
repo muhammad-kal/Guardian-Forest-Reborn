@@ -44,7 +44,6 @@ public class PlayerController : MonoBehaviour
     }
     private void AlatTerpilihCallback(PlayerAlatSelctor.Alat alatTerpilih)
     {
-        Debug.Log(alatTerpilih.ToString());
         actionActive = false;
         alat = alatTerpilih.ToString();
     }
@@ -62,25 +61,26 @@ public class PlayerController : MonoBehaviour
 
         if (pergerakan.x > 0)
         {
-            Flip(true, semuaPartikel);
+            Flip(90, semuaPartikel);
         }
         else if (pergerakan.x < 0)
         {
-            Flip(false, semuaPartikel);
+            Flip(270, semuaPartikel);
         }
         karakterKontroller.Move(pergerakan);
         playerAnimator.AnimasiManager(pergerakan);
     }
 
-    private void Flip(bool isKanan, ParticleSystem[] partikelTerkait)
+    public void Flip(float arah, ParticleSystem[] partikelTerkait)
     {
         float kanan = 90;
         float kiri = 270;
-        float posisiZPartikel = isKanan ? 0.74f : -0.74f;
+        float depan = 0;
+        // float posisiZPartikel = isKanan ? 0.74f : -0.74f;
         Transform childRender = gameObject.transform.GetChild(0);
         for (int i = 0; i < partikelTerkait.Length; i++)
         {
-            if (isKanan)
+            if (arah == 90)
             {
                 childRender.rotation = Quaternion.Euler(0, kanan, 0);
 
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
                 pos.x = Mathf.Abs(pos.x); // pastikan di kanan
                 partikelTerkait[i].transform.localPosition = pos;
             }
-            else
+            else if (arah == 270)
             {
                 childRender.rotation = Quaternion.Euler(0, kiri, 0);
                 partikelTerkait[i].transform.rotation = (Quaternion.Euler(0, -60, 0));
@@ -97,7 +97,19 @@ public class PlayerController : MonoBehaviour
                 pos.x = -Mathf.Abs(pos.x); // pastikan di kiri
                 partikelTerkait[i].transform.localPosition = pos;
             }
+            else
+            {
+                childRender.rotation = Quaternion.Euler(0, depan, 0);
+                partikelTerkait[i].transform.rotation = (Quaternion.Euler(0, 0, 0));
+                Vector3 pos = partikelTerkait[i].transform.localPosition;
+                pos.x = -Mathf.Abs(pos.x);
+                partikelTerkait[i].transform.localPosition = pos;
+            }
         }
+    }
+    public void ubahArahMenanam()
+    {
+        Flip(0, semuaPartikel);
     }
     public void Action()
     {

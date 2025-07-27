@@ -65,6 +65,8 @@ public class PlayerSkillMenanam : MonoBehaviour
         {
             animatorController.PlayMenanam();
             ladangManager = other.GetComponent<LadangManager>();
+            playerController.ubahArahMenanam();
+
             //disini bisa munculin tombol diatas
         }
         else
