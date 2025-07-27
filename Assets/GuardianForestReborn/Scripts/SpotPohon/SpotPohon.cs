@@ -24,6 +24,7 @@ public class SpotPohon : MonoBehaviour
     private stateSpotPohon stateSaatIni;
     public bool diLokasi = false;
     private bool isterbakar = false;
+    private bool isSudahTumbuh = false;
     [SerializeField] private Transform titikApi;
 
 
@@ -33,7 +34,7 @@ public class SpotPohon : MonoBehaviour
         pohonAsli.SetActive(false);
         pohonGhaib.SetActive(false);
         stateSaatIni = stateSpotPohon.TidakTanam;
-        ukuranRandom = UnityEngine.Random.Range(.5f, 2f);
+        ukuranRandom = UnityEngine.Random.Range(.5f, 1f);
         Rigidbody rb = gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = true; // agar tidak jatuh
 
@@ -96,13 +97,14 @@ public class SpotPohon : MonoBehaviour
             pohonGhaib.SetActive(false);
             pohonAsli.SetActive(true);
             stateSaatIni = stateSpotPohon.Tanam;
+            isSudahTumbuh = true;
             Tumbuh();
         }
     }
 
     private void Tumbuh()
     {
-        pohonAsli.gameObject.LeanScale(Vector3.one * 0.1f, 1f).setEase(LeanTweenType.easeInOutBack).setOnComplete(() 
+        pohonAsli.gameObject.LeanScale(Vector3.one * 0.1f, 1f).setEase(LeanTweenType.easeInOutBack).setOnComplete(()
             => pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 10f));
         
     }
