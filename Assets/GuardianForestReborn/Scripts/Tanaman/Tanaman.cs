@@ -20,31 +20,34 @@ public class Tanaman : MonoBehaviour
     }
     public void Terbakar()
     {
-        //// Ubah warna menjadi oranye-merah seperti terbakar
-        //Renderer renderer = jagungRendererTransform.GetComponentInChildren<Renderer>();
-        //if (renderer != null)
-        //{
-        //    renderer.gameObject.LeanColor(Color.white * 2f, 1);
-        //    Debug.Log("b");
-        //}
-        //// (Opsional) Tambah animasi gemetar seperti terbakar
-        //// jagungRendererTransform.gameObject.LeanPunchScale(Vector3.one * 0.2f, 1f, 10, 1f);
-
-        //// (Opsional) Tambah partikel api jika kamu punya prefab-nya
-        //Instantiate(apiPrefab, jagungRendererTransform.position, Quaternion.identity, jagungRendererTransform);
-
-
         Renderer renderer = jagungRendererTransform.GetComponentInChildren<Renderer>();
         if (renderer != null)
         {
-            // Paksa Unity untuk membuat salinan material agar tidak shared
-            Material instanceMat = renderer.material;
-            renderer.material = instanceMat;
+            Material[] materials = renderer.materials;
 
-            // Baru ubah warnanya dengan LeanTween
-            renderer.gameObject.LeanColor(Color.black , 1);
+            foreach (Material mat in materials)
+            {
+                if (mat.HasProperty("_Warna_Shader")) // <- INI "_Warna_Shader" tuh nama Property public di Shader-nya
+                {
+                    Color warnaAwal = mat.GetColor("_Warna_Shader");
+                    Color warnaAkhir = Color.black;
 
-            Debug.Log("b");
+                    LeanTween.value(renderer.gameObject, warnaAwal, warnaAkhir, 1f)
+                        .setOnUpdate((Color val) => {
+                            mat.SetColor("_Warna_Shader", val);
+                        });
+                }
+            }
+
+            Debug.Log("Tanaman terbakar - semua material diubah ke hitam.");
         }
     }
-}
+        // (Opsional) Tambah animasi gemetar seperti terbakar
+        // jagungRendererTransform.gameObject.LeanPunchScale(Vector3.one * 0.2f, 1f, 10, 1f);
+
+        // (Opsional) Tambah partikel api jika kamu punya prefab-nya
+        // Instantiate(apiPrefab, jagungRendererTransform.position, Quaternion.identity, jagungRendererTransform);
+    }
+    
+
+
