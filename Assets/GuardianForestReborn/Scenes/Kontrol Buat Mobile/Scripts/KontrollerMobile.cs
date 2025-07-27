@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class KontrollerMobile : MonoBehaviour
 {
@@ -19,11 +21,16 @@ public class KontrollerMobile : MonoBehaviour
 
     [HideInInspector] public Vector3 GetBergerak => bergerak;
     [HideInInspector] public float magnitudePergerakan;
+    private UnityEngine.UI.Image imageAnalogOutline;
+    private UnityEngine.UI.Image imagePentil;
 
     private void Start()
     {
         posisiAwalAnalogOutline = analogOutline.position;
         posisiAwalPentil = pentil.position;
+        imageAnalogOutline = analogOutline.GetComponent<UnityEngine.UI.Image>();
+        imagePentil = pentil.GetComponent<UnityEngine.UI.Image>();
+        HideAnalog();
     }
 
     private void Update()
@@ -45,6 +52,9 @@ public class KontrollerMobile : MonoBehaviour
     {
         analogOutline.gameObject.SetActive(true);
         bisaKontrol = true;
+
+        SetAlpha(imageAnalogOutline, 1f);
+        SetAlpha(imagePentil, 1f);
     }
 
     private void HideAnalog()
@@ -56,8 +66,16 @@ public class KontrollerMobile : MonoBehaviour
         bisaKontrol = false;
         magnitudePergerakan = 0;
         bergerak = Vector3.zero;
-    }
 
+        SetAlpha(imageAnalogOutline, 0.3f);
+        SetAlpha(imagePentil, 0.3f);
+    }
+    private void SetAlpha(UnityEngine.UI.Image image, float alpha)
+    {
+        Color c = image.color;
+        c.a = alpha;
+        image.color = c;
+    }
 
     private void ControlAnalog()
     {
@@ -66,7 +84,7 @@ public class KontrollerMobile : MonoBehaviour
 
         magnitudePergerakan = arah.magnitude * sensitivitas / Screen.width;
         magnitudePergerakan = Mathf.Min(magnitudePergerakan, analogOutline.rect.width / 2);
-        
+
         bergerak = magnitudePergerakan * arah.normalized;
         Vector3 posisiTarget = bergerak + posisiKlikAwal;
 
