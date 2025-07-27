@@ -46,6 +46,16 @@ public class LadangManager : MonoBehaviour
             SiramAir(listTanahLadang[i]);
         }
     }
+    [NaughtyAttributes.Button]
+    public void BakarSemuaTanaman()
+    {
+        for (int i = 0; i < listTanahLadang.Count; i++)
+        {
+            TanahLadang tanah = listTanahLadang[i];
+            tanah.BakarTanaman();
+        }
+    }
+
 
     private void GetSemuaTanah()
     {

@@ -11,6 +11,7 @@ public class TanahLadang : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private Transform tanamanParent;
     [SerializeField] private MeshRenderer tanahLadangRenderer;
+    
     private Tanaman tanaman;
 
 
@@ -43,6 +44,17 @@ public class TanahLadang : MonoBehaviour
 
         //StartCoroutine("TanahBerubahWarna");
     }
+    public void BakarTanaman()
+    {
+        if (state == LadangState.Tertanam || state == LadangState.Tersiram)
+        {
+            if (tanaman != null)
+            {
+                tanaman.Terbakar();
+            }
+        }
+    }
+
 
     //IEnumerator TanahBerubahWarna()
     //{

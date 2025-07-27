@@ -69,12 +69,13 @@ public class PlayerSkillMenyiram : MonoBehaviour
         {
             animatorController.PlayMenyiram();
             ladangManager = other.GetComponent<LadangManager>();
+            playerController.ubahArahMenanam();
             //disini bisa munculin tombol diatas
         }
         else
         {
             BerhentiMenyiram();
-            if(!other.GetComponent<LadangManager>().isLadangKosong())
+            if (!other.GetComponent<LadangManager>().isLadangKosong())
                 playerController.actionActive = false;
         }
         /*
