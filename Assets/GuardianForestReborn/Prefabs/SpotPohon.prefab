@@ -1046,5 +1046,6 @@ MonoBehaviour:
   apiPrefab: {fileID: 2775811874661854046, guid: 65e273f31f72aba44896583a6cc46fbf,
     type: 3}
   darahPohon: {fileID: 3547583452496190450}
+  ukuranCustom: 10
   diLokasi: 0
   titikApi: {fileID: 4446845707986177347}

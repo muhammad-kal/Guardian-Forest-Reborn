@@ -19,6 +19,7 @@ public class SpotPohon : MonoBehaviour
 
     [Header("Settings")]
     private float ukuranRandom;
+    [SerializeField] private float tinggiCustom;
 
 
     public enum stateSpotPohon { TidakTanam, Tanam, Tumbuh}
@@ -31,6 +32,7 @@ public class SpotPohon : MonoBehaviour
 
     private void Start()
     {
+        tinggiCustom = UnityEngine.Random.RandomRange(2, 5);
         pohonAsli.SetActive(false);
         pohonGhaib.SetActive(false);
         stateSaatIni = stateSpotPohon.TidakTanam;
@@ -50,8 +52,7 @@ public class SpotPohon : MonoBehaviour
             ActiondalamAreaPohon?.Invoke(this);
         }
         if (other.gameObject.tag == "Player" && (stateSaatIni == stateSpotPohon.Tumbuh))
-        {
-            Debug.Log(stateSaatIni.ToString());
+        { 
             darahPohon.gameObject.SetActive(true);
             diLokasi = true;
         }
@@ -70,7 +71,7 @@ public class SpotPohon : MonoBehaviour
 
     public void Terbakar()
     {
-        if (!isterbakar && stateSaatIni == stateSpotPohon.Tanam)
+        if (!isterbakar && (stateSaatIni == stateSpotPohon.Tanam || stateSaatIni == stateSpotPohon.Tumbuh) )
         {
             Debug.Log("fireee");
             Vector3 posisiApi = GetPosisiApiDiAtasPohon();
@@ -82,13 +83,13 @@ public class SpotPohon : MonoBehaviour
     private Vector3 GetPosisiApiDiAtasPohon()
     {
         // Ambil tinggi asli dari mesh
-        float tinggiMesh = pohonAsli.GetComponentInChildren<Renderer>().bounds.size.y;
+        float tinggiMesh = pohonAsli.transform.position.y  + tinggiCustom;
 
         // Ambil posisi dasar pohon
         Vector3 posisiDasar = pohonAsli.transform.position;
 
         // Tambahkan tinggi aktual ke sumbu Y
-        posisiDasar.y = tinggiMesh-8;
+        posisiDasar.y = tinggiMesh;
 
         return posisiDasar;
     }
@@ -115,7 +116,8 @@ public class SpotPohon : MonoBehaviour
     public void Disiram()
     {
         if (isterbakar)
-            MatikanApi();
+            //MatikanApi();
+            return;
         else
         {
             if (diLokasi && stateSaatIni == stateSpotPohon.Tanam)
