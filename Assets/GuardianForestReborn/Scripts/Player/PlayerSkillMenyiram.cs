@@ -11,17 +11,20 @@ public class PlayerSkillMenyiram : MonoBehaviour
     [Header("Elements")]
     private PlayerAnimator animatorController;
     private LadangManager ladangManager;
+    private SpotPohonManager spotPohonManager;
     private PlayerAlatSelctor playerAlatSelector;
     private PlayerController playerController;
+    private string stateSaatIni;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
         animatorController = GetComponent<PlayerAnimator>();
         playerAlatSelector = GetComponent<PlayerAlatSelctor>();
         playerController = GetComponent<PlayerController>();
+        spotPohonManager = FindObjectOfType<SpotPohonManager>();
 
 
         //subscribe AirCollsion
@@ -31,7 +34,7 @@ public class PlayerSkillMenyiram : MonoBehaviour
 
     }
 
-    private void OnDestroy()    
+    private void OnDestroy()
     {
         AirCollision.airOnCollision -= AirCollidedCallback;
         LadangManager.semuaLadangTersiram -= SemuaLadangTersiramCallback;
@@ -42,16 +45,21 @@ public class PlayerSkillMenyiram : MonoBehaviour
     private void AlatTerpilihCallback(PlayerAlatSelctor.Alat alatTerpilih)
     {
         if (!playerAlatSelector.PilihSiram())
-            BerhentiMenyiram(); Debug.Log(alatTerpilih.ToString());
-
+            BerhentiMenyiram();
     }
 
     private void AirCollidedCallback(Vector3[] posisiAir)
     {
-        if (!ladangManager)
-            return;
-
-        ladangManager.AirTersiram(posisiAir);
+        if (playerController.lokasiSaatIni() == "Ladang")
+        {
+            if (ladangManager)
+                ladangManager.AirTersiram(posisiAir);
+        }
+        else if (playerController.lokasiSaatIni() == "TanamZone")
+        {
+            if (spotPohonManager)
+                spotPohonManager.AirTersiram(posisiAir);
+        }
     }
 
     private void SemuaLadangTersiramCallback(LadangManager ladang)
@@ -86,10 +94,17 @@ public class PlayerSkillMenyiram : MonoBehaviour
 
     public void MenyiramApi(SpotPohon other)
     {
-        Debug.Log("a");
-        other.debug();
+        if (playerController.actionActive && other.SiapDisiram())
+        {
+            animatorController.PlayMenyiram();
+            playerController.ubahArahMenanam();
+        }
+        else
+        {
+            BerhentiMenyiram();
+        }
     }
-    private void BerhentiMenyiram()
+    public void BerhentiMenyiram()
     {
         animatorController.StopMenyiram();
     }
@@ -106,7 +121,6 @@ public class PlayerSkillMenyiram : MonoBehaviour
         {
             animatorController.StopMenyiram();
             ladangManager = null;
-
         }
     }
 }

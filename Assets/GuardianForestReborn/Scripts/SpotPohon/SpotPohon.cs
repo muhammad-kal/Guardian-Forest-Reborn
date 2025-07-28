@@ -20,11 +20,10 @@ public class SpotPohon : MonoBehaviour
     private float ukuranRandom;
 
 
-    public enum stateSpotPohon { TidakTanam, Tanam,  }
+    public enum stateSpotPohon { TidakTanam, Tanam, Tumbuh}
     private stateSpotPohon stateSaatIni;
     public bool diLokasi = false;
     private bool isterbakar = false;
-    private bool isSudahTumbuh = false;
     [SerializeField] private Transform titikApi;
 
 
@@ -61,20 +60,14 @@ public class SpotPohon : MonoBehaviour
 
     public void Terbakar()
     {
-        if (!isterbakar)
+        if (!isterbakar && stateSaatIni == stateSpotPohon.Tanam)
         {
+            Debug.Log("fireee");
             Vector3 posisiApi = GetPosisiApiDiAtasPohon();
             Debug.Log(posisiApi);
             Instantiate(apiPrefab, posisiApi, Quaternion.identity, transform);
             isterbakar = true;
         }
-    }
-
-    private Vector3 GetTinggiPohon(Vector3 pos)
-    {
-        ukuranRandom = UnityEngine.Random.Range(0.5f, 4f);
-        pos.y = ukuranRandom; // hanya ubah Y, sisanya tetap
-        return pos;
     }
     private Vector3 GetPosisiApiDiAtasPohon()
     {
@@ -97,19 +90,57 @@ public class SpotPohon : MonoBehaviour
             pohonGhaib.SetActive(false);
             pohonAsli.SetActive(true);
             stateSaatIni = stateSpotPohon.Tanam;
-            isSudahTumbuh = true;
-            Tumbuh();
+            Tanam();
         }
     }
-    public void debug()
+    public bool SiapDisiram()
     {
-        Debug.Log("k");
+        return stateSaatIni == stateSpotPohon.Tanam || isterbakar;
+    }
+    public bool SiapDitanam()
+    {
+        return stateSaatIni == stateSpotPohon.TidakTanam;
     }
 
-    private void Tumbuh()
+    public void Disiram()
     {
-        pohonAsli.gameObject.LeanScale(Vector3.one * 0.1f, 1f).setEase(LeanTweenType.easeInOutBack).setOnComplete(()
-            => pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 10f));
+        if (isterbakar)
+            MatikanApi();
+        else
+        {
+            if (diLokasi && stateSaatIni == stateSpotPohon.Tanam)
+            {
+                Tumbuh();
+            }
+        }  
+    }
 
+
+    private void MatikanApi()
+    {
+        foreach (Transform child in transform)
+        {
+            Debug.Log(child);
+            if (child.CompareTag("Api"))
+            {
+                Destroy(child.gameObject);
+                break;
+            }
+        }
+        isterbakar = false;
+    }
+
+    public void Tanam()
+    {
+        pohonAsli.transform.localScale = Vector3.one * 0.1f;
+        Debug.Log("tanam");
+    }
+
+    public void Tumbuh()
+    {
+        pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 10f)
+            .setEase(LeanTweenType.easeInOutBack);
+        stateSaatIni = stateSpotPohon.Tumbuh;
+        Debug.Log("tumbuh");
     }
 }

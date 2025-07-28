@@ -9,6 +9,10 @@ public class AirCollision : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
+        if (other.gameObject.name != "Tanah")
+        {
+            Debug.Log(other.gameObject.name);
+        }
         ParticleSystem ps = GetComponent<ParticleSystem>();
 
         List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
@@ -20,8 +24,6 @@ public class AirCollision : MonoBehaviour
         {
             posisiCollision[i] = collisionEvents[i].intersection;
             //Debug.Log("Posisi :  " + posisiCollision[i]);
-
-
         }
 
         airOnCollision?.Invoke(posisiCollision);

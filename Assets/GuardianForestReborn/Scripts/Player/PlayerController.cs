@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private PlayerSkillMenanam playerSkillMenanam;
     private PlayerSkillMenyiram playerSkillMenyiram;
     private string alat;
+    private string LokasiSaatIni;
 
 
 
@@ -118,12 +119,34 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         actionActive = false;
+        LokasiSaatIni = other.gameObject.name;
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        actionActive = false;
+        LokasiSaatIni = "";
+        stopAnimation();
+    }
+    public string lokasiSaatIni()
+    {
+        return LokasiSaatIni;
+    }
+    private void stopAnimation()
+    {
+        playerSkillMenyiram.BerhentiMenyiram();
     }
     private void OnTriggerStay(Collider other)
     {
         if (alat == "Bibit")
         {
-            playerSkillMenanam.Menanam(other.GetComponent<LadangManager>());
+            if (other.gameObject.name == "TanamZone")
+            {
+                playerSkillMenanam.MenanamPohon(other.GetComponentInParent<SpotPohon>());
+            }
+            else
+            {
+                playerSkillMenanam.Menanam(other.GetComponent<LadangManager>());
+            }
         }
         else if (alat == "Air")
         {
@@ -131,7 +154,11 @@ public class PlayerController : MonoBehaviour
             {
                 playerSkillMenyiram.MenyiramApi(other.GetComponentInParent<SpotPohon>());
             }
-            playerSkillMenyiram.Menyiram(other.GetComponent<LadangManager>());
+            else
+            {
+                playerSkillMenyiram.Menyiram(other.GetComponent<LadangManager>());
+            }
         }
     }
+
 }

@@ -12,6 +12,8 @@ public class PlayerSkillMenanam : MonoBehaviour
     private LadangManager ladangManager;
     private PlayerAlatSelctor playerAlatSelector;
     private PlayerController playerController;
+    private SpotPohonManager spotPohonManager;
+
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +22,8 @@ public class PlayerSkillMenanam : MonoBehaviour
         animatorController = GetComponent<PlayerAnimator>();
         playerAlatSelector = GetComponent<PlayerAlatSelctor>();
         playerController = GetComponent<PlayerController>();
+        spotPohonManager = FindObjectOfType<SpotPohonManager>();
+
 
         //subscribe BibitCollision
         BibitCollision.bibitOnCollision += BibitCollidedCallback;
@@ -40,15 +44,20 @@ public class PlayerSkillMenanam : MonoBehaviour
     {
         if (!playerAlatSelector.PilihBibit())
             BerhentiMenanam(); 
-
     }
 
     private void BibitCollidedCallback(Vector3[] posisiBibit)
     {
-        if (!ladangManager)
-            return;
-
-        ladangManager.BibitTertanam(posisiBibit);
+        if (playerController.lokasiSaatIni() == "Ladang")
+        {
+            if (ladangManager)
+                ladangManager.BibitTertanam(posisiBibit);
+        }
+        else if (playerController.lokasiSaatIni() == "TanamZone")
+        {
+            if (spotPohonManager)
+                spotPohonManager.bibitTertanam(posisiBibit); 
+        }
     }
     private void SemuaLadangTertanamCallback(LadangManager ladang)
     {
@@ -79,6 +88,18 @@ public class PlayerSkillMenanam : MonoBehaviour
          Bisa gini juga
         if (other.CompareTag(..string
          */
+    }
+    public void MenanamPohon(SpotPohon other)
+    {
+        if (playerController.actionActive && other.SiapDitanam())
+        {
+            animatorController.PlayMenanam();
+            playerController.ubahArahMenanam();
+        }
+        else
+        {
+            BerhentiMenanam();
+        }
     }
 
     private void BerhentiMenanam()

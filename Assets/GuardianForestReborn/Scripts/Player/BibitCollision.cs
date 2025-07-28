@@ -21,8 +21,6 @@ public class BibitCollision : MonoBehaviour
         {
             posisiCollision[i] = collisionEvents[i].intersection;
             //Debug.Log("Posisi :  " + posisiCollision[i]);
-
-
         }
 
         bibitOnCollision?.Invoke(posisiCollision);
