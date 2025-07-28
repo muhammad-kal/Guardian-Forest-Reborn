@@ -9,6 +9,12 @@ public class TanamZone : MonoBehaviour
         GetComponentInParent<SpotPohon>().masukLokasiTanam(other);
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        GetComponentInParent<SpotPohon>().masukLokasiTanam(other);
+
+    }
+
     private void OnTriggerExit(Collider other)
     {
         GetComponentInParent<SpotPohon>().keluarLokasiTanam(other);

@@ -15,6 +15,7 @@ public class SpotPohon : MonoBehaviour
     [SerializeField] private GameObject pohonGhaib;
     [SerializeField] private SpotPohonManager spotPohonManager;
     [SerializeField] private GameObject apiPrefab;
+    [SerializeField] private DarahPohon darahPohon;
 
     [Header("Settings")]
     private float ukuranRandom;
@@ -41,11 +42,18 @@ public class SpotPohon : MonoBehaviour
 
     public void masukLokasiTanam(Collider other)
     {
+        
         if (other.gameObject.tag == "Player" && stateSaatIni == stateSpotPohon.TidakTanam)
         {
             diLokasi = true;
             pohonGhaib.SetActive(true);
             ActiondalamAreaPohon?.Invoke(this);
+        }
+        if (other.gameObject.tag == "Player" && (stateSaatIni == stateSpotPohon.Tumbuh))
+        {
+            Debug.Log(stateSaatIni.ToString());
+            darahPohon.gameObject.SetActive(true);
+            diLokasi = true;
         }
     }
 
@@ -54,6 +62,8 @@ public class SpotPohon : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             pohonGhaib.SetActive(false);
+            darahPohon.gameObject.SetActive(false);
+
         }
         diLokasi = false;
     }
