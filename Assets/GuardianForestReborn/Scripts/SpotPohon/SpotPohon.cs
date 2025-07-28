@@ -22,10 +22,12 @@ public class SpotPohon : MonoBehaviour
     [SerializeField] private float tinggiCustom;
 
 
-    public enum stateSpotPohon { TidakTanam, Tanam, Tumbuh}
+    public enum stateSpotPohon { TidakTanam, Tanam, Tumbuh }
     private stateSpotPohon stateSaatIni;
     public bool diLokasi = false;
     private bool isterbakar = false;
+    public bool sudahDeteksiApi = false;
+    private List<GameObject> musuhYangMenarget = new List<GameObject>();
     [SerializeField] private Transform titikApi;
 
 
@@ -44,7 +46,7 @@ public class SpotPohon : MonoBehaviour
 
     public void masukLokasiTanam(Collider other)
     {
-        
+
         if (other.gameObject.tag == "Player" && stateSaatIni == stateSpotPohon.TidakTanam)
         {
             diLokasi = true;
@@ -52,7 +54,7 @@ public class SpotPohon : MonoBehaviour
             ActiondalamAreaPohon?.Invoke(this);
         }
         if (other.gameObject.tag == "Player" && (stateSaatIni == stateSpotPohon.Tumbuh))
-        { 
+        {
             darahPohon.gameObject.SetActive(true);
             diLokasi = true;
         }
@@ -71,19 +73,20 @@ public class SpotPohon : MonoBehaviour
 
     public void Terbakar()
     {
-        if (!isterbakar && (stateSaatIni == stateSpotPohon.Tanam || stateSaatIni == stateSpotPohon.Tumbuh) )
+        if (!isterbakar)
         {
             Debug.Log("fireee");
             Vector3 posisiApi = GetPosisiApiDiAtasPohon();
             Debug.Log(posisiApi);
             Instantiate(apiPrefab, posisiApi, Quaternion.identity, transform);
             isterbakar = true;
+            PerintahkanSemuaMusuhGantiTarget();
         }
     }
     private Vector3 GetPosisiApiDiAtasPohon()
     {
         // Ambil tinggi asli dari mesh
-        float tinggiMesh = pohonAsli.transform.position.y  + tinggiCustom;
+        float tinggiMesh = pohonAsli.transform.position.y + tinggiCustom;
 
         // Ambil posisi dasar pohon
         Vector3 posisiDasar = pohonAsli.transform.position;
@@ -116,15 +119,14 @@ public class SpotPohon : MonoBehaviour
     public void Disiram()
     {
         if (isterbakar)
-            //MatikanApi();
-            return;
+            MatikanApi();
         else
         {
             if (diLokasi && stateSaatIni == stateSpotPohon.Tanam)
             {
                 Tumbuh();
             }
-        }  
+        }
     }
 
 
@@ -132,9 +134,9 @@ public class SpotPohon : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            Debug.Log(child);
             if (child.CompareTag("Api"))
             {
+                sudahDeteksiApi = false;
                 Destroy(child.gameObject);
                 break;
             }
@@ -154,5 +156,40 @@ public class SpotPohon : MonoBehaviour
             .setEase(LeanTweenType.easeInOutBack);
         stateSaatIni = stateSpotPohon.Tumbuh;
         Debug.Log("tumbuh");
+    }
+    public bool IsValidTarget()
+    {
+        return !isterbakar && (stateSaatIni == stateSpotPohon.Tanam || stateSaatIni == stateSpotPohon.Tumbuh);
+    }
+    public void MenargetkanAnda(GameObject musuh)
+    {
+        if (!musuhYangMenarget.Contains(musuh))
+        {
+            musuhYangMenarget.Add(musuh);
+            Debug.Log($"{musuh.name} menarget pohon {name}");
+        }
+    }
+    public void PerintahkanSemuaMusuhGantiTarget()
+    {
+        for (int i = musuhYangMenarget.Count - 1; i >= 0; i--)
+        {
+            GameObject musuh = musuhYangMenarget[i];
+
+            if (musuh != null)
+            {
+                Musuh musuhScript = musuh.GetComponent<Musuh>();
+                if (musuhScript != null)
+                {
+                    musuhScript.GantiTarget();
+                }
+            }
+        }
+        // Bersihkan list setelah semua diperintahkan Despawn
+        musuhYangMenarget.Clear();
+    }
+
+    public bool stateBisaTerbakar()
+    {
+        return stateSaatIni == stateSpotPohon.Tanam || stateSaatIni == stateSpotPohon.Tumbuh;
     }
 }

@@ -23,5 +23,4 @@ public class PlayerSkillMenanamPohon : MonoBehaviour
     {
         spotPohonManager.DalamAreaSpotPohon(spotPohon);
     }
-
 }

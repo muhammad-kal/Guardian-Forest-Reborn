@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
             {
                 playerSkillMenanam.MenanamPohon(other.GetComponentInParent<SpotPohon>());
             }
-            else
+            else if (other.gameObject.name == "Ladang")
             {
                 playerSkillMenanam.Menanam(other.GetComponent<LadangManager>());
             }
@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour
             {
                 playerSkillMenyiram.MenyiramApi(other.GetComponentInParent<SpotPohon>());
             }
-            else
+            else if (other.gameObject.name == "Ladang")
             {
                 playerSkillMenyiram.Menyiram(other.GetComponent<LadangManager>());
             }

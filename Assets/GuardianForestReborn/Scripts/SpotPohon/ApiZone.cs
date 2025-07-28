@@ -3,28 +3,61 @@ using UnityEngine;
 
 public class ApiTrigger : MonoBehaviour
 {
-    private bool sudahDeteksiApi = false;
     private Coroutine timerBakar;
+    private SpotPohon spotPohon;
+
+    private void Start()
+    {
+        spotPohon = GetComponentInParent<SpotPohon>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Api") && !sudahDeteksiApi)
+        if (IsValidApi(other))
         {
-            sudahDeteksiApi = true;
-            timerBakar = StartCoroutine(TungguDanBakar());
+            MulaiPembakaran();
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (IsValidApi(other))
+        {
+            MulaiPembakaran();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Api"))
+        if (IsValidApi(other))
         {
-            if (timerBakar != null)
-            {
-                StopCoroutine(timerBakar);
-                timerBakar = null;
-                sudahDeteksiApi = false; // reset agar bisa deteksi ulang jika api masuk lagi
-            }
+            HentikanPembakaran();
+        }
+    }
+
+    private bool IsValidApi(Collider other)
+    {
+        return other.CompareTag("Api") && spotPohon != null && !spotPohon.sudahDeteksiApi && spotPohon.stateBisaTerbakar();
+    }
+
+    private void MulaiPembakaran()
+    {
+        Debug.Log("c");
+        if (!spotPohon.sudahDeteksiApi && timerBakar == null)
+        {
+            Debug.Log("d");
+            spotPohon.sudahDeteksiApi = true;
+            timerBakar = StartCoroutine(TungguDanBakar());
+        }
+    }
+
+    private void HentikanPembakaran()
+    {
+        if (timerBakar != null)
+        {
+            StopCoroutine(timerBakar);
+            timerBakar = null;
+            spotPohon.sudahDeteksiApi = false;
         }
     }
 
@@ -33,7 +66,7 @@ public class ApiTrigger : MonoBehaviour
         float waktuTunggu = Random.Range(1f, 4f);
         yield return new WaitForSeconds(waktuTunggu);
 
-        // Setelah waktu acak selesai, panggil Terbakar
-        GetComponentInParent<SpotPohon>().Terbakar();
+        spotPohon?.Terbakar();
+        timerBakar = null;
     }
 }
