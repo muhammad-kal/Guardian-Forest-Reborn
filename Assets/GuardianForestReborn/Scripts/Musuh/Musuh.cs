@@ -14,6 +14,7 @@ public class Musuh : MonoBehaviour
 
     [SerializeField] private float radiusSampaiTarget = 0.1f;
     private SpotPohonManager spotPohonManager;
+    private float kecepatan = 3f;
 
     void Start()
     {
@@ -34,10 +35,9 @@ public class Musuh : MonoBehaviour
         {
             Vector3 posisiSekarang = transform.position;
             Vector3 posisiTarget = new Vector3(target.position.x, posisiSekarang.y, posisiSekarang.z);
-            transform.position = Vector3.MoveTowards(posisiSekarang, posisiTarget, 3f * Time.deltaTime);
-            //Debug.Log(posisiTarget-posisiSekarang);
-            pembakarRenderer.forward = (posisiTarget.x - posisiSekarang.x > 0) ? new Vector3(1,0,0) : new Vector3(-1,0,0);
-            
+            transform.position = Vector3.MoveTowards(posisiSekarang, posisiTarget, kecepatan * Time.deltaTime);
+            pembakarRenderer.forward = (posisiTarget.x - posisiSekarang.x > 0) ? new Vector3(1, 0, 0) : new Vector3(-1, 0, 0);
+
 
             float jarak = Mathf.Abs(transform.position.x - posisiTarget.x);
             if (jarak <= radiusSampaiTarget)
@@ -46,6 +46,8 @@ public class Musuh : MonoBehaviour
                 {
                     // Sampai ke target utama, stop
                     target = null;
+                    pembakarAnimatorController.speed = 0f; // Pause Animasi
+                    HadapKeDepan();
                     AktifkanColliderApi();
                 }
                 else
@@ -56,10 +58,15 @@ public class Musuh : MonoBehaviour
             }
         }
     }
+    private void HadapKeDepan()
+    {
+        pembakarRenderer.forward = Vector3.forward;
+    }
 
     public void GantiTarget()
     {
         NonaktifkanColliderApi();
+        pembakarAnimatorController.speed = 1f; // Mulai lagi animasi
         SpotPohon targetSpot = spotPohonManager.GetTargetMusuh(transform.position);
         if (targetSpot)
         {
@@ -69,11 +76,10 @@ public class Musuh : MonoBehaviour
         else
             despawn();
     }
-    
+
     public void despawn()
     {
         // Buat transform target dummy untuk posisi vector
-        Debug.Log("a");
         GameObject dummy = new GameObject("DespawnTarget");
         dummy.transform.position = spawnPoint;
         target = dummy.transform;
@@ -102,6 +108,14 @@ public class Musuh : MonoBehaviour
             {
                 colliderApi.enabled = false;
             }
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            despawn();
+            kecepatan = 10f;
         }
     }
 }

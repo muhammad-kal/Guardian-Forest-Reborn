@@ -41,17 +41,23 @@ public class SpotPohon : MonoBehaviour
         ukuranRandom = UnityEngine.Random.Range(.5f, 1f);
         Rigidbody rb = gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = true; // agar tidak jatuh
-
     }
 
     public void masukLokasiTanam(Collider other)
     {
 
-        if (other.gameObject.tag == "Player" && stateSaatIni == stateSpotPohon.TidakTanam)
+        if (other.GetComponent<PlayerController>().alat == "Bibit")
         {
-            diLokasi = true;
-            pohonGhaib.SetActive(true);
-            ActiondalamAreaPohon?.Invoke(this);
+            if (other.gameObject.tag == "Player" && other.GetComponent<PlayerController>().alat == "Bibit" && stateSaatIni == stateSpotPohon.TidakTanam)
+            {
+                diLokasi = true;
+                pohonGhaib.SetActive(true);
+                ActiondalamAreaPohon?.Invoke(this);
+            }
+        }
+        else
+        {
+            pohonGhaib.SetActive(false);
         }
         if (other.gameObject.tag == "Player" && (stateSaatIni == stateSpotPohon.Tumbuh))
         {
@@ -66,7 +72,6 @@ public class SpotPohon : MonoBehaviour
         {
             pohonGhaib.SetActive(false);
             darahPohon.gameObject.SetActive(false);
-
         }
         diLokasi = false;
     }

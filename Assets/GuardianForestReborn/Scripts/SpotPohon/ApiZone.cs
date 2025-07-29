@@ -42,10 +42,8 @@ public class ApiTrigger : MonoBehaviour
 
     private void MulaiPembakaran()
     {
-        Debug.Log("c");
         if (!spotPohon.sudahDeteksiApi && timerBakar == null)
         {
-            Debug.Log("d");
             spotPohon.sudahDeteksiApi = true;
             timerBakar = StartCoroutine(TungguDanBakar());
         }

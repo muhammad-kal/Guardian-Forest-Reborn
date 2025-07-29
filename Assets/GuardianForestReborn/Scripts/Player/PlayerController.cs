@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     private PlayerAlatSelctor playerAlatSelector;
     private PlayerSkillMenanam playerSkillMenanam;
     private PlayerSkillMenyiram playerSkillMenyiram;
-    private string alat;
+    public string alat;
     private string LokasiSaatIni;
 
 

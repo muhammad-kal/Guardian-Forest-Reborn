@@ -81,7 +81,6 @@ public class SpotPohonManager : MonoBehaviour
         {
             if (spot == null || !spot.IsValidTarget())
             {
-                Debug.Log(!spot.IsValidTarget());
                 continue;
             }
 

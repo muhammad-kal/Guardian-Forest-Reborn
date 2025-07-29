@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3885212513082731230}
   - component: {fileID: 2154020723315832988}
+  - component: {fileID: 140655153028072461}
   m_Layer: 0
   m_Name: Musuh
   m_TagString: Musuh
@@ -49,6 +50,27 @@ MonoBehaviour:
   pembakarAnimatorController: {fileID: 5093911748013179599}
   pembakarRenderer: {fileID: 8862652104503546458}
   radiusSampaiTarget: 0.1
+--- !u!65 &140655153028072461
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2357129002576867781}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 15.872809, y: 3.1898417, z: 11.258919}
+  m_Center: {x: 0.36164427, y: 1.4214623, z: 0.6680851}
 --- !u!1 &4027331876830444113
 GameObject:
   m_ObjectHideFlags: 0
