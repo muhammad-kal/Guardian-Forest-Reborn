@@ -39,12 +39,33 @@ public class PlayerAnimator : MonoBehaviour
             {
                 animator.SetFloat("animasiKecepatan", pergerakan.magnitude * kecepatanAnimasi + .5f);
                 PlayAnimasiJalan();
-
             }
 
         }
         else
             PlayAnimasiDiem();
+    }
+    public void AnimasiManagerOtomatis(Vector3 pergerakan)
+    {
+        float kecepatanGerak = pergerakan.magnitude * 100;
+
+        if (kecepatanGerak > 0.1f)
+        {
+            if (kecepatanGerak >= 20f)
+            {
+                animator.SetFloat("animasiKecepatan", pergerakan.magnitude * kecepatanAnimasi);
+                PlayAnimasiLari();
+            }
+            else
+            {
+                animator.SetFloat("animasiKecepatan", pergerakan.magnitude * kecepatanAnimasi + 0.5f);
+                PlayAnimasiJalan();
+            }
+        }
+        else
+        {
+            PlayAnimasiDiem();
+        }
     }
 
     private void PlayAnimasiLari()

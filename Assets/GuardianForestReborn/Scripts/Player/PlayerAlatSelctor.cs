@@ -41,7 +41,6 @@ public class PlayerAlatSelctor : MonoBehaviour
         }
 
         actionPilihAlat?.Invoke(alatAktif);
-
     }
 
     public bool PilihBibit()
@@ -63,6 +62,4 @@ public class PlayerAlatSelctor : MonoBehaviour
     {
         return alatAktif == Alat.Kosong;
     }
-
-
 }

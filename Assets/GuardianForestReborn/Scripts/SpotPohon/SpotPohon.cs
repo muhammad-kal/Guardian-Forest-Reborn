@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System;
 using Unity.Mathematics;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class SpotPohon : MonoBehaviour
 {
@@ -31,7 +32,6 @@ public class SpotPohon : MonoBehaviour
     private List<GameObject> musuhYangMenarget = new List<GameObject>();
     [SerializeField] private Transform titikApi;
     Tutorial tutorial = null;
-
     private void Start()
     {
         // Inisialisasi nilai awal (berlaku untuk semua scene)
@@ -118,7 +118,9 @@ public class SpotPohon : MonoBehaviour
             Instantiate(apiPrefab, posisiApi, Quaternion.identity, transform);
             isterbakar = true;
             if (tutorial)
-                tutorial.NextStep();
+            {
+                GetComponentInParent<SpotPohonManager>().nextsteptutorial();
+            }
             PerintahkanSemuaMusuhGantiTarget();
         }
     }
@@ -181,6 +183,8 @@ public class SpotPohon : MonoBehaviour
             }
         }
         isterbakar = false;
+        if (tutorial)
+            GetComponentInParent<SpotPohonManager>().CekApakahSemuaPohonSudahTidakTerbakarTutorial();
     }
 
     public void Tanam()
@@ -234,5 +238,9 @@ public class SpotPohon : MonoBehaviour
     public bool stateBisaTerbakar()
     {
         return stateSaatIni == stateSpotPohon.Tanam || stateSaatIni == stateSpotPohon.Tumbuh;
+    }
+    public bool apakahTerbakar()
+    {
+        return isterbakar;
     }
 }

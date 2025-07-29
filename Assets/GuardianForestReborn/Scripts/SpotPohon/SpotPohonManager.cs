@@ -5,6 +5,9 @@ using UnityEngine;
 public class SpotPohonManager : MonoBehaviour
 {
     [SerializeField] List<SpotPohon> semuaPohon;
+    Tutorial tutorial = null;
+    private bool TutorialHanyaSekali = false;
+
     private void Start()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -99,5 +102,37 @@ public class SpotPohonManager : MonoBehaviour
     public void DalamAreaSpotPohon(SpotPohon spotPohon)
     {
 
+    }
+    public void CekApakahSemuaPohonSudahTidakTerbakarTutorial()
+    {
+        foreach (var pohon in semuaPohon)
+        {
+            if (pohon != null && pohon.apakahTerbakar())
+            {
+                // Ada yang masih terbakar, keluar dari method
+                return;
+            }
+        }
+
+        // Semua pohon tidak terbakar, panggil NextStep() di root
+        tutorial = transform.root.GetComponent<Tutorial>();
+        if (tutorial != null)
+        {
+            tutorial.NextStep();
+            Debug.Log("annn");
+        }
+        else
+        {
+            Debug.LogWarning("Root tidak ditemukan untuk memanggil NextStep()");
+        }
+    }
+    public void nextsteptutorial()
+    {
+        if (!TutorialHanyaSekali)
+        {
+            tutorial = transform.root.GetComponent<Tutorial>();
+            tutorial.NextStep();
+            TutorialHanyaSekali = true;
+        } 
     }
 }

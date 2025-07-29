@@ -56,10 +56,8 @@ public class Musuh : MonoBehaviour
                     // Sampai ke posisi despawn, hapus objek
                     if (SceneManager.GetActiveScene().name == "Tutorial")
                     {
-                        Debug.Log("ahh");
                         Destroy(transform.parent.gameObject);
-                    }
-                        
+                    }     
                     Destroy(gameObject);
                 }
             }

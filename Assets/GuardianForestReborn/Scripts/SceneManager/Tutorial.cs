@@ -12,6 +12,7 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private List<string> kalimat = new List<string>();
     [SerializeField] private List<GameObject> ColliderYangAkanDihapus;
     private int trigger = 0;
+    private int ColliderTerhapus = 0;
     PlayerController playerController;
 
     void Start()
@@ -64,6 +65,7 @@ public class Tutorial : MonoBehaviour
                 //ngeliat musuh bakar pohon
                 analog.GetComponentInChildren<KontrollerMobile>().HideAnalog();
                 analog.GetComponent<EventTrigger>().enabled = false;
+                actionButton.SetActive(false);
                 displayKalimat(trigger);
                 Transform grandChild = transform.Find("GAMEPLAY/MusuhManager");
                 if (grandChild != null)
@@ -82,8 +84,13 @@ public class Tutorial : MonoBehaviour
             case 7:
                 //mulai padamin api
                 analog.GetComponent<EventTrigger>().enabled = true;
+                actionButton.SetActive(true);
                 displayKalimat(trigger);
                 trigger++;
+                break;
+            case 8:
+                HapusColliderPertama();
+                displayKalimat(trigger);
                 break;
         }
     }
@@ -91,11 +98,13 @@ public class Tutorial : MonoBehaviour
     {
         if (ColliderYangAkanDihapus.Count > 0)
         {
-            GameObject target = ColliderYangAkanDihapus[0];
+            Debug.Log(ColliderTerhapus);
+            GameObject target = ColliderYangAkanDihapus[ColliderTerhapus];
             Collider col = target.GetComponent<Collider>();
 
             if (col != null)
             {
+                ColliderTerhapus++;
                 Destroy(col);
             }
         }

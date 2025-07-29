@@ -55,9 +55,13 @@ public class PlayerController : MonoBehaviour
 
     private void MovementManager()
     {
-        if (jalanotomatis)
+        if (jalanotomatis && (Vector3.Distance(transform.position, TargetOtomatis.position) >= 1f))
         {
             Jalanotomatis();
+        }
+        else if (jalanotomatis && Vector3.Distance(transform.position, TargetOtomatis.position) < 1f)
+        {
+            BerhentiJalanOtomatis();
         }
         else
         {
@@ -75,6 +79,8 @@ public class PlayerController : MonoBehaviour
             }
             karakterKontroller.Move(pergerakan);
             playerAnimator.AnimasiManager(pergerakan);
+            jalanotomatis = false;
+            TargetOtomatis = null;
         }
     }
 
@@ -119,31 +125,28 @@ public class PlayerController : MonoBehaviour
         jalanotomatis = true;
         TargetOtomatis = target;
     }
+    private void BerhentiJalanOtomatis()
+    {
+        jalanotomatis = false;
+        TargetOtomatis = null;
+        transform.root.GetComponent<Tutorial>()?.NextStep();
+    }
     private void Jalanotomatis()
     {
-        Vector3 posisiSekarang = transform.position;
-        Vector3 posisiTarget = new Vector3(TargetOtomatis.position.x, posisiSekarang.y, posisiSekarang.z);
+        Vector3 pergerakan = new Vector3(0.2f, 0, 0);
+        pergerakan.y = 0;
+        pergerakan.z = 0;
 
-        float jarak = Mathf.Abs(transform.position.x - posisiTarget.x);
-        if (jarak <= 0.1f)
+        if (pergerakan.x > 0)
         {
-            jalanotomatis = false;
-            TargetOtomatis = null;
-            Tutorial tutorial = transform.root.GetComponent<Tutorial>();
-            if (tutorial != null)
-            {
-                tutorial.NextStep();
-            }
+            Flip(90, semuaPartikel);
         }
-        else
+        else if (pergerakan.x < 0)
         {
-            transform.position = Vector3.MoveTowards(posisiSekarang, posisiTarget, kecepatan * Time.deltaTime);
-            float arah = Mathf.Sign(posisiTarget.x - posisiSekarang.x);
-            if (arah > 0)
-                Flip(90, semuaPartikel);
-            else if (arah < 0)
-                Flip(270, semuaPartikel);
+            Flip(270, semuaPartikel);
         }
+        karakterKontroller.Move(pergerakan);
+        playerAnimator.AnimasiManagerOtomatis(pergerakan);
     }
     public void ubahArahMenanam()
     {
