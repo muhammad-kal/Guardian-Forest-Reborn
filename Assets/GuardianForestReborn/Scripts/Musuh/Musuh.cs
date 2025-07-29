@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class Musuh : MonoBehaviour
 {
+
+    [Header("Elements")]
+    [SerializeField] private Animator pembakarAnimatorController;
+    [SerializeField] private Transform pembakarRenderer;
+
+
     private Transform target;
     private Vector3 spawnPoint; // simpan posisi, bukan Transform
     private bool sedangDespawn = false;
@@ -13,6 +19,7 @@ public class Musuh : MonoBehaviour
     {
         spawnPoint = transform.position; // perbaikan: simpan posisi awal saat musuh muncul
         spotPohonManager = FindAnyObjectByType<SpotPohonManager>();
+        pembakarAnimatorController.Play("Jalan");
     }
 
     public void SetTarget(Transform newTarget)
@@ -28,6 +35,9 @@ public class Musuh : MonoBehaviour
             Vector3 posisiSekarang = transform.position;
             Vector3 posisiTarget = new Vector3(target.position.x, posisiSekarang.y, posisiSekarang.z);
             transform.position = Vector3.MoveTowards(posisiSekarang, posisiTarget, 3f * Time.deltaTime);
+            //Debug.Log(posisiTarget-posisiSekarang);
+            pembakarRenderer.forward = (posisiTarget.x - posisiSekarang.x > 0) ? new Vector3(1,0,0) : new Vector3(-1,0,0);
+            
 
             float jarak = Mathf.Abs(transform.position.x - posisiTarget.x);
             if (jarak <= radiusSampaiTarget)
