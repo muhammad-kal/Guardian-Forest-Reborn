@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MusuhManager : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class MusuhManager : MonoBehaviour
     private void Start()
     {
         spotPohonManager = FindAnyObjectByType<SpotPohonManager>();
-        StartCoroutine(SpawnerLoop());
+        if (SceneManager.GetActiveScene().name != "Tutorial")
+            StartCoroutine(SpawnerLoop());
     }
 
     private IEnumerator SpawnerLoop()
@@ -58,5 +60,10 @@ public class MusuhManager : MonoBehaviour
                 count++;
         }
         return count;
+    }
+    public void spawnsekali()
+    {
+        SpotPohon targetSpot = spotPohonManager?.GetTargetMusuh(SpawnPoint1.position);
+        SpawnMusuh(SpawnPoint1.position, targetSpot);
     }
 }

@@ -57,7 +57,7 @@ public class KontrollerMobile : MonoBehaviour
         SetAlpha(imagePentil, 1f);
     }
 
-    private void HideAnalog()
+    public void HideAnalog()
     {
         // Tetap terlihat, hanya reset posisinya
         analogOutline.position = posisiAwalAnalogOutline;

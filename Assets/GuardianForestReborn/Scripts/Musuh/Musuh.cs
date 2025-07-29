@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Musuh : MonoBehaviour
 {
@@ -53,6 +54,12 @@ public class Musuh : MonoBehaviour
                 else
                 {
                     // Sampai ke posisi despawn, hapus objek
+                    if (SceneManager.GetActiveScene().name == "Tutorial")
+                    {
+                        Debug.Log("ahh");
+                        Destroy(transform.parent.gameObject);
+                    }
+                        
                     Destroy(gameObject);
                 }
             }

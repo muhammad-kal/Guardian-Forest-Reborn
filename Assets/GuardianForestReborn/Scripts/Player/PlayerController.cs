@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -18,6 +15,8 @@ public class PlayerController : MonoBehaviour
     private PlayerSkillMenyiram playerSkillMenyiram;
     public string alat;
     private string LokasiSaatIni;
+    private Transform TargetOtomatis;
+    private bool jalanotomatis = false;
 
 
 
@@ -36,7 +35,7 @@ public class PlayerController : MonoBehaviour
         playerSkillMenyiram = GetComponent<PlayerSkillMenyiram>();
 
         playerAlatSelector.actionPilihAlat += AlatTerpilihCallback;
-
+        GameObject rootObject = transform.root.gameObject;
     }
     private void OnDestroy()
     {
@@ -56,20 +55,27 @@ public class PlayerController : MonoBehaviour
 
     private void MovementManager()
     {
-        Vector3 pergerakan = new Vector3(analog.GetBergerak.x * kecepatan * Time.deltaTime / Screen.width, transform.position.y, transform.position.z);
-        pergerakan.y = 0;
-        pergerakan.z = 0;
+        if (jalanotomatis)
+        {
+            Jalanotomatis();
+        }
+        else
+        {
+            Vector3 pergerakan = new Vector3(analog.GetBergerak.x * kecepatan * Time.deltaTime / Screen.width, transform.position.y, transform.position.z);
+            pergerakan.y = 0;
+            pergerakan.z = 0;
 
-        if (pergerakan.x > 0)
-        {
-            Flip(90, semuaPartikel);
+            if (pergerakan.x > 0)
+            {
+                Flip(90, semuaPartikel);
+            }
+            else if (pergerakan.x < 0)
+            {
+                Flip(270, semuaPartikel);
+            }
+            karakterKontroller.Move(pergerakan);
+            playerAnimator.AnimasiManager(pergerakan);
         }
-        else if (pergerakan.x < 0)
-        {
-            Flip(270, semuaPartikel);
-        }
-        karakterKontroller.Move(pergerakan);
-        playerAnimator.AnimasiManager(pergerakan);
     }
 
     public void Flip(float arah, ParticleSystem[] partikelTerkait)
@@ -106,6 +112,37 @@ public class PlayerController : MonoBehaviour
                 pos.x = -Mathf.Abs(pos.x);
                 partikelTerkait[i].transform.localPosition = pos;
             }
+        }
+    }
+    public void JalanKeTargetX(Transform target)
+    {
+        jalanotomatis = true;
+        TargetOtomatis = target;
+    }
+    private void Jalanotomatis()
+    {
+        Vector3 posisiSekarang = transform.position;
+        Vector3 posisiTarget = new Vector3(TargetOtomatis.position.x, posisiSekarang.y, posisiSekarang.z);
+
+        float jarak = Mathf.Abs(transform.position.x - posisiTarget.x);
+        if (jarak <= 0.1f)
+        {
+            jalanotomatis = false;
+            TargetOtomatis = null;
+            Tutorial tutorial = transform.root.GetComponent<Tutorial>();
+            if (tutorial != null)
+            {
+                tutorial.NextStep();
+            }
+        }
+        else
+        {
+            transform.position = Vector3.MoveTowards(posisiSekarang, posisiTarget, kecepatan * Time.deltaTime);
+            float arah = Mathf.Sign(posisiTarget.x - posisiSekarang.x);
+            if (arah > 0)
+                Flip(90, semuaPartikel);
+            else if (arah < 0)
+                Flip(270, semuaPartikel);
         }
     }
     public void ubahArahMenanam()

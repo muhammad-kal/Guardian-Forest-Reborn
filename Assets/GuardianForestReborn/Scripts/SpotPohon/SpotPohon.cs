@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 using Unity.Mathematics;
 using UnityEngine.UIElements;
@@ -29,23 +30,54 @@ public class SpotPohon : MonoBehaviour
     public bool sudahDeteksiApi = false;
     private List<GameObject> musuhYangMenarget = new List<GameObject>();
     [SerializeField] private Transform titikApi;
-
-
+    Tutorial tutorial = null;
 
     private void Start()
     {
-        tinggiCustom = UnityEngine.Random.RandomRange(2, 5);
+        // Inisialisasi nilai awal (berlaku untuk semua scene)
+        tinggiCustom = UnityEngine.Random.Range(2, 5);
+        ukuranRandom = UnityEngine.Random.Range(0.5f, 1f);
         pohonAsli.SetActive(false);
         pohonGhaib.SetActive(false);
         stateSaatIni = stateSpotPohon.TidakTanam;
-        ukuranRandom = UnityEngine.Random.Range(.5f, 1f);
+
         Rigidbody rb = gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = true; // agar tidak jatuh
+
+        // Jika scene adalah "Tutorial", ambil referensi Tutorial
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+        {
+            tutorial = transform.root.GetComponent<Tutorial>();
+
+            // Jika nama bukan "SpotPohon", langsung tanam otomatis (untuk tutorial)
+            if (gameObject.name != "SpotPohon")
+            {
+                TanamTutorial();
+            }
+        }
     }
+
+    private void TanamTutorial()
+    {
+        // Aktifkan pohon ghaib dulu (jika ingin animasi singkat atau efek visual lain)
+        pohonGhaib.SetActive(true);
+
+        // Ubah state menjadi Tanam, aktifkan pohon asli
+        pohonAsli.SetActive(true);
+        stateSaatIni = stateSpotPohon.Tanam;
+
+        // Langsung ubah skala pohon tanpa animasi tumbuh
+        pohonAsli.transform.localScale = Vector3.one * ukuranRandom;
+        stateSaatIni = stateSpotPohon.Tumbuh;
+
+        // Sembunyikan pohon ghaib karena sudah tumbuh
+        pohonGhaib.SetActive(false);
+    }
+
 
     public void masukLokasiTanam(Collider other)
     {
-
+        if (!other.CompareTag("Player")) return;
         if (other.GetComponent<PlayerController>().alat == "Bibit")
         {
             if (other.gameObject.tag == "Player" && other.GetComponent<PlayerController>().alat == "Bibit" && stateSaatIni == stateSpotPohon.TidakTanam)
@@ -85,6 +117,8 @@ public class SpotPohon : MonoBehaviour
             Debug.Log(posisiApi);
             Instantiate(apiPrefab, posisiApi, Quaternion.identity, transform);
             isterbakar = true;
+            if (tutorial)
+                tutorial.NextStep();
             PerintahkanSemuaMusuhGantiTarget();
         }
     }
@@ -152,6 +186,8 @@ public class SpotPohon : MonoBehaviour
     public void Tanam()
     {
         pohonAsli.transform.localScale = Vector3.one * 0.1f;
+        if (tutorial && gameObject.name == "SpotPohon")
+            tutorial.NextStep();
         Debug.Log("tanam");
     }
 
@@ -160,6 +196,8 @@ public class SpotPohon : MonoBehaviour
         pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 10f)
             .setEase(LeanTweenType.easeInOutBack);
         stateSaatIni = stateSpotPohon.Tumbuh;
+        if (tutorial && gameObject.name == "SpotPohon")
+            tutorial.NextStep();
         Debug.Log("tumbuh");
     }
     public bool IsValidTarget()
