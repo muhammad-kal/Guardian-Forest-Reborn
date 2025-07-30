@@ -5,7 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Light))]
 public class Petromak : MonoBehaviour
 {
-    private Light lampuNgedip;
+    [Header("Elements")]
+    [SerializeField] private Light lampuNgedip;
     [SerializeField, Range(0f, 150f)] private float minimal = 0.5f;
     [SerializeField, Range(0f, 150f)] private float maksimal = 1.2f;
     [SerializeField, Min(0f)] private float durasiNgedip = 0.2f;

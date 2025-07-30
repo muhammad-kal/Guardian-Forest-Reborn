@@ -7,11 +7,12 @@ TagManager:
   - Ladang
   - Api
   - Musuh
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Bulan
   - Water
   - UI
   - Tanah
