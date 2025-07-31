@@ -5587,6 +5587,7 @@ MonoBehaviour:
   playerAnimator: {fileID: 4472987983129517590}
   semuaPartikel:
   - {fileID: 3108731520713677863}
+  alat: 
   kecepatan: 150
   actionActive: 0
 --- !u!114 &4472987983129517590

@@ -12,6 +12,7 @@ public class PlayerSkillMenyiram : MonoBehaviour
     private PlayerAnimator animatorController;
     private LadangManager ladangManager;
     private SpotPohonManager spotPohonManager;
+    private SpotPohonManagerTutorial spotPohonManagerTutorial;
     private PlayerAlatSelctor playerAlatSelector;
     private PlayerController playerController;
     private string stateSaatIni;
@@ -25,7 +26,7 @@ public class PlayerSkillMenyiram : MonoBehaviour
         playerAlatSelector = GetComponent<PlayerAlatSelctor>();
         playerController = GetComponent<PlayerController>();
         spotPohonManager = FindObjectOfType<SpotPohonManager>();
-
+        spotPohonManagerTutorial = FindObjectOfType<SpotPohonManagerTutorial>();
 
         //subscribe AirCollsion
         AirCollision.airOnCollision += AirCollidedCallback;
@@ -59,6 +60,8 @@ public class PlayerSkillMenyiram : MonoBehaviour
         {
             if (spotPohonManager)
                 spotPohonManager.AirTersiram(posisiAir);
+            else if (spotPohonManagerTutorial)
+                spotPohonManagerTutorial.AirTersiram(posisiAir);
         }
     }
 
@@ -93,6 +96,18 @@ public class PlayerSkillMenyiram : MonoBehaviour
     }
 
     public void MenyiramApi(SpotPohon other)
+    {
+        if (playerController.actionActive && other.SiapDisiram())
+        {
+            animatorController.PlayMenyiram();
+            playerController.ubahArahMenanam();
+        }
+        else
+        {
+            BerhentiMenyiram();
+        }
+    }
+    public void MenyiramApiTutorial(SpotPohonTutorial other)
     {
         if (playerController.actionActive && other.SiapDisiram())
         {

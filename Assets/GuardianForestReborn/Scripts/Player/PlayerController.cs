@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private string LokasiSaatIni;
     private Transform TargetOtomatis;
     private bool jalanotomatis = false;
+    private string currentSceneName;
 
 
 
@@ -36,6 +37,9 @@ public class PlayerController : MonoBehaviour
 
         playerAlatSelector.actionPilihAlat += AlatTerpilihCallback;
         GameObject rootObject = transform.root.gameObject;
+
+        currentSceneName = SceneManager.GetActiveScene().name;
+
     }
     private void OnDestroy()
     {
@@ -55,11 +59,11 @@ public class PlayerController : MonoBehaviour
 
     private void MovementManager()
     {
-        if (jalanotomatis && (Vector3.Distance(transform.position, TargetOtomatis.position) >= 1f))
+        if (jalanotomatis && (Vector3.Distance(transform.position, TargetOtomatis.position) >= 2f))
         {
             Jalanotomatis();
         }
-        else if (jalanotomatis && Vector3.Distance(transform.position, TargetOtomatis.position) < 1f)
+        else if (jalanotomatis && Vector3.Distance(transform.position, TargetOtomatis.position) < 2f)
         {
             BerhentiJalanOtomatis();
         }
@@ -133,6 +137,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Jalanotomatis()
     {
+        Debug.Log(Vector3.Distance(transform.position, TargetOtomatis.position));
         Vector3 pergerakan = new Vector3(0.2f, 0, 0);
         pergerakan.y = 0;
         pergerakan.z = 0;
@@ -181,7 +186,10 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.name == "TanamZone")
             {
-                playerSkillMenanam.MenanamPohon(other.GetComponentInParent<SpotPohon>());
+                if (currentSceneName == "Tutorial")
+                    playerSkillMenanam.MenanamPohonTutorial(other.GetComponentInParent<SpotPohonTutorial>());
+                else
+                    playerSkillMenanam.MenanamPohon(other.GetComponentInParent<SpotPohon>());
             }
             else if (other.gameObject.name == "Ladang")
             {
@@ -192,7 +200,10 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.name == "TanamZone")
             {
-                playerSkillMenyiram.MenyiramApi(other.GetComponentInParent<SpotPohon>());
+                if (currentSceneName == "Tutorial")
+                    playerSkillMenyiram.MenyiramApiTutorial(other.GetComponentInParent<SpotPohonTutorial>());
+                else
+                    playerSkillMenyiram.MenyiramApi(other.GetComponentInParent<SpotPohon>());
             }
             else if (other.gameObject.name == "Ladang")
             {

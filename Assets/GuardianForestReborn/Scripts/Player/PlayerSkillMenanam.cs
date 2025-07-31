@@ -13,6 +13,7 @@ public class PlayerSkillMenanam : MonoBehaviour
     private PlayerAlatSelctor playerAlatSelector;
     private PlayerController playerController;
     private SpotPohonManager spotPohonManager;
+    private SpotPohonManagerTutorial spotPohonManagerTutorial;
 
 
     // Start is called before the first frame update
@@ -23,6 +24,7 @@ public class PlayerSkillMenanam : MonoBehaviour
         playerAlatSelector = GetComponent<PlayerAlatSelctor>();
         playerController = GetComponent<PlayerController>();
         spotPohonManager = FindObjectOfType<SpotPohonManager>();
+        spotPohonManagerTutorial = FindAnyObjectByType<SpotPohonManagerTutorial>();
 
 
         //subscribe BibitCollision
@@ -37,7 +39,6 @@ public class PlayerSkillMenanam : MonoBehaviour
         BibitCollision.bibitOnCollision -= BibitCollidedCallback;
         LadangManager.semuaLadangTertanam -= SemuaLadangTertanamCallback;
         playerAlatSelector.actionPilihAlat -= AlatTerpilihCallback;
-
     }
 
     private void AlatTerpilihCallback(PlayerAlatSelctor.Alat alatTerpilih)
@@ -56,7 +57,9 @@ public class PlayerSkillMenanam : MonoBehaviour
         else if (playerController.lokasiSaatIni() == "TanamZone")
         {
             if (spotPohonManager)
-                spotPohonManager.bibitTertanam(posisiBibit); 
+                spotPohonManager.bibitTertanam(posisiBibit);
+            else if (spotPohonManagerTutorial)
+                spotPohonManagerTutorial.bibitTertanam(posisiBibit);
         }
     }
     private void SemuaLadangTertanamCallback(LadangManager ladang)
@@ -90,6 +93,18 @@ public class PlayerSkillMenanam : MonoBehaviour
          */
     }
     public void MenanamPohon(SpotPohon other)
+    {
+        if (playerController.actionActive && other.SiapDitanam())
+        {
+            animatorController.PlayMenanam();
+            playerController.ubahArahMenanam();
+        }
+        else
+        {
+            BerhentiMenanam();
+        }
+    }
+    public void MenanamPohonTutorial(SpotPohonTutorial other)
     {
         if (playerController.actionActive && other.SiapDitanam())
         {

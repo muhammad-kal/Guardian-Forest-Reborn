@@ -70,7 +70,7 @@ public class Tutorial : MonoBehaviour
                 Transform grandChild = transform.Find("GAMEPLAY/MusuhManager");
                 if (grandChild != null)
                 {
-                    grandChild.GetComponent<MusuhManager>().spawnsekali();
+                    grandChild.GetComponent<MusuhManagerTutorial>().spawnsekali();
                 }
                 trigger++;
                 break;
