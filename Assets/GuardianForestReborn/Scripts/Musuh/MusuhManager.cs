@@ -5,18 +5,20 @@ using UnityEngine.SceneManagement;
 public class MusuhManager : MonoBehaviour
 {
     [SerializeField] private GameObject musuhPrefab;
-    [SerializeField] private int MaxMusuh = 5;
+    [SerializeField] private int MaxMusuh = 2;
     [SerializeField] private Transform SpawnPoint1;
     [SerializeField] private Transform SpawnPoint2;
 
     private SpotPohonManager spotPohonManager;
     private int spawnIndex = 0;
+    public bool BolehSpawn = false;
+    public int MaxMusuhLevel;
+    private int JumlahMusuhSekarang;
 
     private void Start()
     {
         spotPohonManager = FindAnyObjectByType<SpotPohonManager>();
-        if (SceneManager.GetActiveScene().name != "Tutorial")
-            StartCoroutine(SpawnerLoop());
+        StartCoroutine(SpawnerLoop());
     }
 
     private IEnumerator SpawnerLoop()
@@ -24,6 +26,16 @@ public class MusuhManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(2f, 5f));
+
+            if (!BolehSpawn) continue;
+
+            if (JumlahMusuhSekarang >= MaxMusuhLevel)
+            {
+                yield return null;
+                Level root = transform.root.GetComponent<Level>();
+                root.MaxMusuhTercapai();
+                continue;
+            }
 
             if (GetJumlahMusuhAktif() < MaxMusuh)
             {
@@ -35,6 +47,7 @@ public class MusuhManager : MonoBehaviour
                 if (targetSpot != null)
                 {
                     SpawnMusuh(spawnPoint.position, targetSpot);
+                    JumlahMusuhSekarang++;
                 }
             }
         }
@@ -60,10 +73,5 @@ public class MusuhManager : MonoBehaviour
                 count++;
         }
         return count;
-    }
-    public void spawnsekali()
-    {
-        SpotPohon targetSpot = spotPohonManager?.GetTargetMusuh(SpawnPoint1.position);
-        SpawnMusuh(SpawnPoint1.position, targetSpot);
     }
 }

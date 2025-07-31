@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpotPohonManager : MonoBehaviour
 {
     [SerializeField] List<SpotPohon> semuaPohon;
+    private List<EntityState> DataStateSemuaPohon;
     Tutorial tutorial = null;
     private bool TutorialHanyaSekali = false;
 
@@ -14,6 +15,48 @@ public class SpotPohonManager : MonoBehaviour
         {
             semuaPohon.Add(GetComponentsInChildren<SpotPohon>()[i]);
         }
+    }
+    public void SetData(List<EntityState> data)
+    {
+        DataStateSemuaPohon = data;
+        GantiStateSemuaPohonStart();
+    }
+
+    private void GantiStateSemuaPohonStart()
+    {
+        foreach (SpotPohon pohon in semuaPohon)
+        {
+            string nama = pohon.gameObject.name;
+            EntityState data = DataStateSemuaPohon.Find(d => d.nama == nama);
+
+            if (data != null)
+            {
+                switch (data.state)
+                {
+                    case "Tanam":
+                        pohon.startTanam();
+                        break;
+                    case "Tumbuh":
+                        pohon.startTumbuh();
+                        break;
+                    case "Tidak Tanam":
+                        break;
+                    default:
+                        Debug.LogWarning($"{nama} memiliki state tidak dikenal: {data.state}");
+                        break;
+                }
+            }
+        }
+    }
+
+    public void GantiStatePohon(string nama, string stateBaru)
+    {
+        EntityState data = DataStateSemuaPohon.Find(d => d.nama == nama);
+        Debug.Log(nama + stateBaru);
+        if (data != null)
+            data.state = stateBaru;
+        else
+            Debug.LogWarning($"Nama {nama} tidak ditemukan di DataStateSemuaPohon.");
     }
 
     public void Menanam()
@@ -133,6 +176,13 @@ public class SpotPohonManager : MonoBehaviour
             tutorial = transform.root.GetComponent<Tutorial>();
             tutorial.NextStep();
             TutorialHanyaSekali = true;
-        } 
+        }
+    }
+    public void KeperluanLevel(float FireSpawn)
+    {
+        foreach (var pohon in semuaPohon)
+        {
+            pohon.WaktuSebelumTerbakar(FireSpawn);
+        }
     }
 }

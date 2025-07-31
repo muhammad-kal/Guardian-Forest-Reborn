@@ -31,7 +31,7 @@ public class SpotPohon : MonoBehaviour
     public bool sudahDeteksiApi = false;
     private List<GameObject> musuhYangMenarget = new List<GameObject>();
     [SerializeField] private Transform titikApi;
-    Tutorial tutorial = null;
+    private GameObject ApiChild;
     private void Start()
     {
         // Inisialisasi nilai awal (berlaku untuk semua scene)
@@ -43,37 +43,44 @@ public class SpotPohon : MonoBehaviour
 
         Rigidbody rb = gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = true; // agar tidak jatuh
-
-        // Jika scene adalah "Tutorial", ambil referensi Tutorial
-        if (SceneManager.GetActiveScene().name == "Tutorial")
+    }
+    private void Update()
+    {
+        Terluka();
+    }
+    private void Terluka()
+    {
+        if (isterbakar)
         {
-            tutorial = transform.root.GetComponent<Tutorial>();
-
-            // Jika nama bukan "SpotPohon", langsung tanam otomatis (untuk tutorial)
-            if (gameObject.name != "SpotPohon")
-            {
-                TanamTutorial();
-            }
+            darahPohon.kurangiDarah();
         }
     }
-
-    private void TanamTutorial()
+    public void DarahHabis()
     {
-        // Aktifkan pohon ghaib dulu (jika ingin animasi singkat atau efek visual lain)
+        isterbakar = false;
+        Destroy(ApiChild);
+        spotPohonManager.GantiStatePohon(gameObject.name, "Tidak Tanam");
+        ResetKeTanam();
+    }
+    private void ResetKeTanam()
+    {
+        pohonGhaib.SetActive(false);
+        pohonAsli.SetActive(false);
+        pohonAsli.transform.localScale = Vector3.zero; // atau Vector3.one * ukuranAwal jika ada
+        stateSaatIni = stateSpotPohon.TidakTanam;
+    }
+    public void startTanam()
+    {
+        Tanam();
+    }
+    public void startTumbuh()
+    {
         pohonGhaib.SetActive(true);
-
-        // Ubah state menjadi Tanam, aktifkan pohon asli
         pohonAsli.SetActive(true);
-        stateSaatIni = stateSpotPohon.Tanam;
-
-        // Langsung ubah skala pohon tanpa animasi tumbuh
         pohonAsli.transform.localScale = Vector3.one * ukuranRandom;
         stateSaatIni = stateSpotPohon.Tumbuh;
-
-        // Sembunyikan pohon ghaib karena sudah tumbuh
         pohonGhaib.SetActive(false);
     }
-
 
     public void masukLokasiTanam(Collider other)
     {
@@ -115,12 +122,8 @@ public class SpotPohon : MonoBehaviour
             Debug.Log("fireee");
             Vector3 posisiApi = GetPosisiApiDiAtasPohon();
             Debug.Log(posisiApi);
-            Instantiate(apiPrefab, posisiApi, Quaternion.identity, transform);
+            ApiChild = Instantiate(apiPrefab, posisiApi, Quaternion.identity, transform);
             isterbakar = true;
-            if (tutorial)
-            {
-                GetComponentInParent<SpotPohonManager>().nextsteptutorial();
-            }
             PerintahkanSemuaMusuhGantiTarget();
         }
     }
@@ -183,15 +186,12 @@ public class SpotPohon : MonoBehaviour
             }
         }
         isterbakar = false;
-        if (tutorial)
-            GetComponentInParent<SpotPohonManager>().CekApakahSemuaPohonSudahTidakTerbakarTutorial();
     }
 
     public void Tanam()
     {
         pohonAsli.transform.localScale = Vector3.one * 0.1f;
-        if (tutorial && gameObject.name == "SpotPohon")
-            tutorial.NextStep();
+        spotPohonManager.GantiStatePohon(gameObject.name, "Tanam");
         Debug.Log("tanam");
     }
 
@@ -200,8 +200,7 @@ public class SpotPohon : MonoBehaviour
         pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 10f)
             .setEase(LeanTweenType.easeInOutBack);
         stateSaatIni = stateSpotPohon.Tumbuh;
-        if (tutorial && gameObject.name == "SpotPohon")
-            tutorial.NextStep();
+        spotPohonManager.GantiStatePohon(gameObject.name, "Tumbuh");
         Debug.Log("tumbuh");
     }
     public bool IsValidTarget()
@@ -242,5 +241,14 @@ public class SpotPohon : MonoBehaviour
     public bool apakahTerbakar()
     {
         return isterbakar;
+    }
+    public void WaktuSebelumTerbakar(float FireSpawn)
+    {
+        ApiTrigger[] semuaApi = GetComponentsInChildren<ApiTrigger>();
+
+        foreach (var api in semuaApi)
+        {
+            api.waktuTunggu = FireSpawn; // atau sesuai logic kamu
+        }
     }
 }

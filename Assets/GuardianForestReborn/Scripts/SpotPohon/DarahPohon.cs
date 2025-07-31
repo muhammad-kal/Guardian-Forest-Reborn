@@ -14,8 +14,8 @@ public class DarahPohon : MonoBehaviour
     [Header("Settings")]
 
     [SerializeField] Vector3 offsetPosisi;
-    [SerializeField,Range(0,1)] float darah;
-    [SerializeField,Range(0,1)] float maxDarah;
+    [SerializeField, Range(0, 1)] public float darah;
+    [SerializeField, Range(0, 1)] public float maxDarah;
 
 
     private void Start()
@@ -26,15 +26,19 @@ public class DarahPohon : MonoBehaviour
 
     }
 
-    public void setDarah(float darah)
+    public void setDarah(float nilaiDarah)
     {
-        barDarah.localScale = new Vector3(darah, 1f);
-        barDarah.GetComponentInChildren<SpriteRenderer>().material.color = Color.Lerp(warnaDarahSedikit, warnaDarahBanyak, darah);
-    }
+        darah = Mathf.Clamp(nilaiDarah, 0f, maxDarah);
+        float persen = darah / maxDarah;
 
-    private void normalisasiDarah(float darah, float maxDarah)
+        barDarah.localScale = new Vector3(persen, 1f);
+        barDarah.GetComponentInChildren<SpriteRenderer>().material.color =
+            Color.Lerp(warnaDarahSedikit, warnaDarahBanyak, persen);
+    }
+    public void kurangiDarah()
     {
-        
+        if (darah <= 0)
+            GetComponentInParent<SpotPohon>().DarahHabis();
+        setDarah(darah - 0.1f * Time.deltaTime);
     }
-
 }
