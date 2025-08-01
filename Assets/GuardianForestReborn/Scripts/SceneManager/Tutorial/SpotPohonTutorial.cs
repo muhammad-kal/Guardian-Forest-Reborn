@@ -103,9 +103,7 @@ public class SpotPohonTutorial : MonoBehaviour
     {
         if (!isterbakar)
         {
-            Debug.Log("fireee");
             Vector3 posisiApi = GetPosisiApiDiAtasPohon();
-            Debug.Log(posisiApi);
             Instantiate(apiPrefab, posisiApi, Quaternion.identity, transform);
             isterbakar = true;
             GetComponentInParent<SpotPohonManagerTutorial>().nextsteptutorial();

@@ -9,10 +9,12 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private GameObject actionButton;
     [SerializeField] private GameObject alat;
     [SerializeField] private GameObject analog;
+    [SerializeField] private GameObject UIPohon;
     [SerializeField] private List<string> kalimat = new List<string>();
     [SerializeField] private List<GameObject> ColliderYangAkanDihapus;
     private int trigger = 0;
     private int ColliderTerhapus = 0;
+    private bool onlyonce = false;
     PlayerController playerController;
 
     void Start()
@@ -20,6 +22,7 @@ public class Tutorial : MonoBehaviour
         displayKalimat(-1);
         alat.SetActive(false);
         actionButton.SetActive(false);
+        UIPohon.SetActive(false);
         playerController = FindObjectOfType<PlayerController>();
     }
     private void displayKalimat(int k)
@@ -82,13 +85,18 @@ public class Tutorial : MonoBehaviour
                 trigger++;
                 break;
             case 7:
-                //mulai padamin api
-                analog.GetComponent<EventTrigger>().enabled = true;
+                UIPohon.SetActive(true);
                 actionButton.SetActive(true);
                 displayKalimat(trigger);
                 trigger++;
                 break;
             case 8:
+                //mulai padamin api
+                analog.GetComponent<EventTrigger>().enabled = true;
+                displayKalimat(trigger);
+                trigger++;
+                break;
+            case 9:
                 HapusColliderPertama();
                 displayKalimat(trigger);
                 break;
@@ -106,6 +114,13 @@ public class Tutorial : MonoBehaviour
                 ColliderTerhapus++;
                 Destroy(col);
             }
+        }
+    }
+    public void NextStepAction()
+    {
+        if (!onlyonce && trigger == 8)
+        {
+            NextStep();
         }
     }
 }

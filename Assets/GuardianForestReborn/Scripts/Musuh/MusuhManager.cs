@@ -12,13 +12,22 @@ public class MusuhManager : MonoBehaviour
     private SpotPohonManager spotPohonManager;
     private int spawnIndex = 0;
     public bool BolehSpawn = false;
-    public int MaxMusuhLevel;
+    public int MaxMusuhDiLevel;
     private int JumlahMusuhSekarang;
+    private JumlahMusuh UIJumlahMusuh;
 
     private void Start()
     {
         spotPohonManager = FindAnyObjectByType<SpotPohonManager>();
         StartCoroutine(SpawnerLoop());
+        UIJumlahMusuh = FindObjectOfType<JumlahMusuh>();
+    }
+    public void KeperluanLevel(int max, int maxSpawnSameTime)
+    {
+        MaxMusuhDiLevel = max;
+        MaxMusuh = maxSpawnSameTime;
+        BolehSpawn = true;
+        UIJumlahMusuh.SetNilai(0, MaxMusuhDiLevel);
     }
 
     private IEnumerator SpawnerLoop()
@@ -29,11 +38,11 @@ public class MusuhManager : MonoBehaviour
 
             if (!BolehSpawn) continue;
 
-            if (JumlahMusuhSekarang >= MaxMusuhLevel)
+            if (JumlahMusuhSekarang >= MaxMusuhDiLevel)
             {
                 yield return null;
                 Level root = transform.root.GetComponent<Level>();
-                root.MaxMusuhTercapai();
+                root.GameSelesai();
                 continue;
             }
 
@@ -48,6 +57,7 @@ public class MusuhManager : MonoBehaviour
                 {
                     SpawnMusuh(spawnPoint.position, targetSpot);
                     JumlahMusuhSekarang++;
+                    UIJumlahMusuh.UpdateNilai(1);
                 }
             }
         }
@@ -61,6 +71,7 @@ public class MusuhManager : MonoBehaviour
         {
             musuhScript.SetTarget(targetSpot.transform); // arahkan musuh ke target pohon
             targetSpot.MenargetkanAnda(musuhBaru); // beri tahu pohon bahwa musuh datang
+            Debug.Log("a");
         }
     }
 

@@ -493,7 +493,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 5.42, z: -0.0099998}
-  m_LocalScale: {x: 10.996123, y: 10.830434, z: 3.307754}
+  m_LocalScale: {x: 10.996123, y: 10.830434, z: 2.7777195}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5455304297827711957}
@@ -510,6 +510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ca39f87079a0c149835d797bcbc1b0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waktuTunggu: 10
 --- !u!65 &7679051962819600872
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -686,7 +687,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 4.65, z: -1.99}
-  m_LocalScale: {x: 4.170058, y: 9.464968, z: 6.1297}
+  m_LocalScale: {x: 3.085384, y: 9.464968, z: 6.1297}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5455304297827711957}

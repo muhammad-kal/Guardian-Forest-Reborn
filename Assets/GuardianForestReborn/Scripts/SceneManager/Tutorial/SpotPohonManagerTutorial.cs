@@ -7,6 +7,7 @@ public class SpotPohonManagerTutorial : MonoBehaviour
     [SerializeField] List<SpotPohonTutorial> semuaPohon;
     Tutorial tutorial = null;
     private bool TutorialHanyaSekali = false;
+    private JumlahPohon jumlahPohon;
 
     private void Start()
     {
@@ -14,6 +15,8 @@ public class SpotPohonManagerTutorial : MonoBehaviour
         {
             semuaPohon.Add(GetComponentsInChildren<SpotPohonTutorial>()[i]);
         }
+        jumlahPohon = FindObjectOfType<JumlahPohon>();
+        jumlahPohon.SetNilai(3, 3);
     }
 
     public void Menanam()

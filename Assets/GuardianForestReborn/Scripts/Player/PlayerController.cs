@@ -137,7 +137,6 @@ public class PlayerController : MonoBehaviour
     }
     private void Jalanotomatis()
     {
-        Debug.Log(Vector3.Distance(transform.position, TargetOtomatis.position));
         Vector3 pergerakan = new Vector3(0.2f, 0, 0);
         pergerakan.y = 0;
         pergerakan.z = 0;

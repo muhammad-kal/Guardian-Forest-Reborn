@@ -5,7 +5,8 @@ using UnityEngine;
 public class SpotPohonManager : MonoBehaviour
 {
     [SerializeField] List<SpotPohon> semuaPohon;
-    private List<EntityState> DataStateSemuaPohon;
+    private SaveData DataStateSemuaPohon;
+    JumlahPohon UIJumlahPohon;
 
     private void Start()
     {
@@ -13,8 +14,9 @@ public class SpotPohonManager : MonoBehaviour
         {
             semuaPohon.Add(GetComponentsInChildren<SpotPohon>()[i]);
         }
+        UIJumlahPohon = FindObjectOfType<JumlahPohon>();
     }
-    public void SetData(List<EntityState> data)
+    public void SetData(SaveData data)
     {
         DataStateSemuaPohon = data;
         GantiStateSemuaPohonStart();
@@ -22,19 +24,24 @@ public class SpotPohonManager : MonoBehaviour
 
     private void GantiStateSemuaPohonStart()
     {
+        int pohonTumbuh = 0;
+        int JumlahPohon = 0;
         foreach (SpotPohon pohon in semuaPohon)
         {
             string nama = pohon.gameObject.name;
-            EntityState data = DataStateSemuaPohon.Find(d => d.nama == nama);
+            EntityState data = DataStateSemuaPohon.GetEntity(nama);
+            JumlahPohon++;
 
             if (data != null)
             {
                 switch (data.state)
                 {
                     case "Tanam":
+                        pohonTumbuh++;
                         pohon.startTanam();
                         break;
                     case "Tumbuh":
+                        pohonTumbuh++;
                         pohon.startTumbuh();
                         break;
                     case "Tidak Tanam":
@@ -45,16 +52,19 @@ public class SpotPohonManager : MonoBehaviour
                 }
             }
         }
+        UIJumlahPohon.SetNilai(pohonTumbuh, JumlahPohon);
     }
 
     public void GantiStatePohon(string nama, string stateBaru)
     {
-        EntityState data = DataStateSemuaPohon.Find(d => d.nama == nama);
-        Debug.Log(nama + stateBaru);
-        if (data != null)
-            data.state = stateBaru;
-        else
-            Debug.LogWarning($"Nama {nama} tidak ditemukan di DataStateSemuaPohon.");
+        DataStateSemuaPohon.SetState(nama, stateBaru);
+        if (stateBaru == "Tidak Tanam")
+            UIJumlahPohon.UpdateNilai(-1);
+        else if (stateBaru == "Tanam")
+            UIJumlahPohon.UpdateNilai(1);
+
+        if (UIJumlahPohon.SisaPohon() == 0)
+            transform.root.GetComponent<Level>().GameSelesai();
     }
 
     public void Menanam()
@@ -142,17 +152,6 @@ public class SpotPohonManager : MonoBehaviour
     public void DalamAreaSpotPohon(SpotPohon spotPohon)
     {
 
-    }
-    public void CekApakahSemuaPohonSudahTidakTerbakarTutorial()
-    {
-        foreach (var pohon in semuaPohon)
-        {
-            if (pohon != null && pohon.apakahTerbakar())
-            {
-                // Ada yang masih terbakar, keluar dari method
-                return;
-            }
-        }
     }
     public void KeperluanLevel(float FireSpawn)
     {

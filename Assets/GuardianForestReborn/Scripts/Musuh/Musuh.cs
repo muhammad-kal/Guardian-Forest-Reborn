@@ -28,6 +28,7 @@ public class Musuh : MonoBehaviour
     {
         target = newTarget;
         sedangDespawn = false;
+        
     }
 
     void Update()
@@ -85,6 +86,7 @@ public class Musuh : MonoBehaviour
     public void despawn()
     {
         // Buat transform target dummy untuk posisi vector
+        kecepatan *= 5;
         GameObject dummy = new GameObject("DespawnTarget");
         dummy.transform.position = spawnPoint;
         target = dummy.transform;
@@ -120,7 +122,6 @@ public class Musuh : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             despawn();
-            kecepatan = 10f;
         }
     }
 }

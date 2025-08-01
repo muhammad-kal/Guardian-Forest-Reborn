@@ -71,6 +71,8 @@ public class SpotPohon : MonoBehaviour
     }
     public void startTanam()
     {
+        pohonAsli.SetActive(true);
+        stateSaatIni = stateSpotPohon.Tanam;
         Tanam();
     }
     public void startTumbuh()
@@ -118,9 +120,7 @@ public class SpotPohon : MonoBehaviour
     {
         if (!isterbakar)
         {
-            Debug.Log("fireee");
             Vector3 posisiApi = GetPosisiApiDiAtasPohon();
-            Debug.Log(posisiApi);
             ApiChild = Instantiate(apiPrefab, posisiApi, Quaternion.identity, transform);
             isterbakar = true;
             PerintahkanSemuaMusuhGantiTarget();
@@ -191,16 +191,14 @@ public class SpotPohon : MonoBehaviour
     {
         pohonAsli.transform.localScale = Vector3.one * 0.1f;
         spotPohonManager.GantiStatePohon(gameObject.name, "Tanam");
-        Debug.Log("tanam");
     }
 
     public void Tumbuh()
     {
-        pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 10f)
+        pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 4f)
             .setEase(LeanTweenType.easeInOutBack);
         stateSaatIni = stateSpotPohon.Tumbuh;
         spotPohonManager.GantiStatePohon(gameObject.name, "Tumbuh");
-        Debug.Log("tumbuh");
     }
     public bool IsValidTarget()
     {
@@ -211,7 +209,6 @@ public class SpotPohon : MonoBehaviour
         if (!musuhYangMenarget.Contains(musuh))
         {
             musuhYangMenarget.Add(musuh);
-            Debug.Log($"{musuh.name} menarget pohon {name}");
         }
     }
     public void PerintahkanSemuaMusuhGantiTarget()

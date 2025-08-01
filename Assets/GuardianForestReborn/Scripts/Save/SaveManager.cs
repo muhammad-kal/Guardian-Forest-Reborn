@@ -14,17 +14,23 @@ public static class SaveManager
 
     public static SaveData Load()
     {
+        SaveData data;
+
         if (!File.Exists(path))
         {
             Debug.Log("Tidak ada file save. Menggunakan data default.");
-            SaveData data = new SaveData();
+            data = new SaveData();
             data.ResetToDefault();
             Save(data);
-            return data;
+        }
+        else
+        {
+            string json = File.ReadAllText(path);
+            data = JsonUtility.FromJson<SaveData>(json);
+            data.BuildEntityMap();
         }
 
-        string json = File.ReadAllText(path);
-        return JsonUtility.FromJson<SaveData>(json);
+        return data;
     }
 
     public static void Reset()
