@@ -98,7 +98,6 @@ public class Tutorial : MonoBehaviour
     {
         if (ColliderYangAkanDihapus.Count > 0)
         {
-            Debug.Log(ColliderTerhapus);
             GameObject target = ColliderYangAkanDihapus[ColliderTerhapus];
             Collider col = target.GetComponent<Collider>();
 

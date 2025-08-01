@@ -70,23 +70,22 @@ public class SpotPohonTutorial : MonoBehaviour
     public void masukLokasiTanam(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        if (other.GetComponent<PlayerController>().alat == "Bibit")
-        {
-            if (other.gameObject.tag == "Player" && other.GetComponent<PlayerController>().alat == "Bibit" && stateSaatIni == stateSpotPohon.TidakTanam)
-            {
-                diLokasi = true;
-                pohonGhaib.SetActive(true);
-                ActiondalamAreaPohon?.Invoke(this);
-            }
-        }
-        else
-        {
-            pohonGhaib.SetActive(false);
-        }
-        if (other.gameObject.tag == "Player" && (stateSaatIni == stateSpotPohon.Tumbuh))
+
+        diLokasi = true;
+        string alatSekarang = other.GetComponent<PlayerController>().alat;
+
+        if (stateSaatIni == stateSpotPohon.Tumbuh)
         {
             darahPohon.gameObject.SetActive(true);
-            diLokasi = true;
+        }
+
+        if (alatSekarang == "Bibit")
+        {
+            if (stateSaatIni == stateSpotPohon.TidakTanam)
+            {
+                pohonGhaib.SetActive(true);
+            }
+            ActiondalamAreaPohon?.Invoke(this);
         }
     }
 
@@ -185,7 +184,7 @@ public class SpotPohonTutorial : MonoBehaviour
 
     public void Tumbuh()
     {
-        pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 10f)
+        pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 4f)
             .setEase(LeanTweenType.easeInOutBack);
         stateSaatIni = stateSpotPohon.Tumbuh;
         if (gameObject.name == "SpotPohon")

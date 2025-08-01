@@ -6,8 +6,6 @@ public class SpotPohonManager : MonoBehaviour
 {
     [SerializeField] List<SpotPohon> semuaPohon;
     private List<EntityState> DataStateSemuaPohon;
-    Tutorial tutorial = null;
-    private bool TutorialHanyaSekali = false;
 
     private void Start()
     {
@@ -99,7 +97,6 @@ public class SpotPohonManager : MonoBehaviour
 
             if (!pohonTerdekat.SiapDisiram())
                 continue;
-
             pohonTerdekat.Disiram();
         }
     }
@@ -155,27 +152,6 @@ public class SpotPohonManager : MonoBehaviour
                 // Ada yang masih terbakar, keluar dari method
                 return;
             }
-        }
-
-        // Semua pohon tidak terbakar, panggil NextStep() di root
-        tutorial = transform.root.GetComponent<Tutorial>();
-        if (tutorial != null)
-        {
-            tutorial.NextStep();
-            Debug.Log("annn");
-        }
-        else
-        {
-            Debug.LogWarning("Root tidak ditemukan untuk memanggil NextStep()");
-        }
-    }
-    public void nextsteptutorial()
-    {
-        if (!TutorialHanyaSekali)
-        {
-            tutorial = transform.root.GetComponent<Tutorial>();
-            tutorial.NextStep();
-            TutorialHanyaSekali = true;
         }
     }
     public void KeperluanLevel(float FireSpawn)

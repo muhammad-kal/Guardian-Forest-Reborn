@@ -40,7 +40,6 @@ public class PlayerSkillMenyiram : MonoBehaviour
         AirCollision.airOnCollision -= AirCollidedCallback;
         LadangManager.semuaLadangTersiram -= SemuaLadangTersiramCallback;
         playerAlatSelector.actionPilihAlat -= AlatTerpilihCallback;
-
     }
 
     private void AlatTerpilihCallback(PlayerAlatSelctor.Alat alatTerpilih)
