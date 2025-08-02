@@ -43,6 +43,7 @@ public class MusuhManager : MonoBehaviour
                 yield return null;
                 Level root = transform.root.GetComponent<Level>();
                 root.GameSelesai();
+                BolehSpawn = false;
                 continue;
             }
 

@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     private PlayerAlatSelctor playerAlatSelector;
     private PlayerSkillMenanam playerSkillMenanam;
     private PlayerSkillMenyiram playerSkillMenyiram;
+    private Inventory inventory;
+
     public string alat;
     private string LokasiSaatIni;
     private Transform TargetOtomatis;
@@ -34,23 +36,29 @@ public class PlayerController : MonoBehaviour
         playerAlatSelector = GetComponent<PlayerAlatSelctor>();
         playerSkillMenanam = GetComponent<PlayerSkillMenanam>();
         playerSkillMenyiram = GetComponent<PlayerSkillMenyiram>();
+        inventory = GetComponent<Inventory>();
+        inventory.onItemChanged = HandleItemChange;
 
-        playerAlatSelector.actionPilihAlat += AlatTerpilihCallback;
+        // playerAlatSelector.actionPilihAlat += AlatTerpilihCallback;
         GameObject rootObject = transform.root.gameObject;
 
         currentSceneName = SceneManager.GetActiveScene().name;
-
     }
-    private void OnDestroy()
-    {
-        playerAlatSelector.actionPilihAlat -= AlatTerpilihCallback;
-
-    }
-    private void AlatTerpilihCallback(PlayerAlatSelctor.Alat alatTerpilih)
+    void HandleItemChange(string item)
     {
         actionActive = false;
-        alat = alatTerpilih.ToString();
+        alat = item;
     }
+    // private void OnDestroy()
+    // {
+    //     playerAlatSelector.actionPilihAlat -= AlatTerpilihCallback;
+
+    // }
+    // private void AlatTerpilihCallback(PlayerAlatSelctor.Alat alatTerpilih)
+    // {
+    //     actionActive = false;
+    //     alat = alatTerpilih.ToString();
+    // }
 
     private void Update()
     {
@@ -195,7 +203,7 @@ public class PlayerController : MonoBehaviour
                 playerSkillMenanam.Menanam(other.GetComponent<LadangManager>());
             }
         }
-        else if (alat == "Air")
+        else if (alat == "Gembor")
         {
             if (other.gameObject.name == "TanamZone")
             {
