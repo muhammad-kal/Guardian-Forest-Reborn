@@ -8,6 +8,8 @@ TagManager:
   - Api
   - Musuh
   - FxTemporaire
+  - Gembor
+  - Bibit
   layers:
   - Default
   - TransparentFX
