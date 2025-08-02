@@ -7,6 +7,7 @@ public class SpotPohonManager : MonoBehaviour
     [SerializeField] List<SpotPohon> semuaPohon;
     private SaveData DataStateSemuaPohon;
     JumlahPohon UIJumlahPohon;
+    private float darah;
 
     private void Start()
     {
@@ -15,6 +16,15 @@ public class SpotPohonManager : MonoBehaviour
             semuaPohon.Add(GetComponentsInChildren<SpotPohon>()[i]);
         }
         UIJumlahPohon = FindObjectOfType<JumlahPohon>();
+    }
+    public void KeperluanLevel(float FireSpawn, float maxDarah, SaveData data)
+    {
+        foreach (var pohon in semuaPohon)
+        {
+            pohon.WaktuSebelumTerbakar(FireSpawn);
+        }
+        darah = maxDarah;
+        SetData(data);
     }
     public void SetData(SaveData data)
     {
@@ -38,13 +48,16 @@ public class SpotPohonManager : MonoBehaviour
                 {
                     case "Tanam":
                         pohonTumbuh++;
+                        pohon.SetDarah(darah/2);
                         pohon.startTanam();
                         break;
                     case "Tumbuh":
                         pohonTumbuh++;
+                        pohon.SetDarah(darah);
                         pohon.startTumbuh();
                         break;
                     case "Tidak Tanam":
+                        pohon.SetDarah(darah/2);
                         break;
                     default:
                         Debug.LogWarning($"{nama} memiliki state tidak dikenal: {data.state}");
@@ -152,12 +165,5 @@ public class SpotPohonManager : MonoBehaviour
     public void DalamAreaSpotPohon(SpotPohon spotPohon)
     {
 
-    }
-    public void KeperluanLevel(float FireSpawn)
-    {
-        foreach (var pohon in semuaPohon)
-        {
-            pohon.WaktuSebelumTerbakar(FireSpawn);
-        }
     }
 }

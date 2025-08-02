@@ -71,7 +71,6 @@ public class MusuhManager : MonoBehaviour
         {
             musuhScript.SetTarget(targetSpot.transform); // arahkan musuh ke target pohon
             targetSpot.MenargetkanAnda(musuhBaru); // beri tahu pohon bahwa musuh datang
-            Debug.Log("a");
         }
     }
 

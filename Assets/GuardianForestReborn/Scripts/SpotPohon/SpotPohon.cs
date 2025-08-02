@@ -32,17 +32,24 @@ public class SpotPohon : MonoBehaviour
     private List<GameObject> musuhYangMenarget = new List<GameObject>();
     [SerializeField] private Transform titikApi;
     private GameObject ApiChild;
+    private Vector3 originalScale;
+    private float Mydarah;
     private void Start()
     {
         // Inisialisasi nilai awal (berlaku untuk semua scene)
         tinggiCustom = UnityEngine.Random.Range(2, 5);
-        ukuranRandom = UnityEngine.Random.Range(0.5f, 1f);
+        ukuranRandom = UnityEngine.Random.Range(0.3f, 0.6f);
         pohonAsli.SetActive(false);
         pohonGhaib.SetActive(false);
         stateSaatIni = stateSpotPohon.TidakTanam;
 
         Rigidbody rb = gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = true; // agar tidak jatuh
+        originalScale = pohonAsli.transform.localScale;
+    }
+    public void SetDarah(float DarahBaru)
+    {
+        Mydarah = DarahBaru;
     }
     private void Update()
     {
@@ -57,10 +64,17 @@ public class SpotPohon : MonoBehaviour
     }
     public void DarahHabis()
     {
+        if (stateSaatIni == stateSpotPohon.Tumbuh)
+        {
+            Mydarah /= 2;
+            darahPohon.setMaxDarah(Mydarah);
+        }
         isterbakar = false;
+        sudahDeteksiApi = false;
         Destroy(ApiChild);
         spotPohonManager.GantiStatePohon(gameObject.name, "Tidak Tanam");
         ResetKeTanam();
+        darahPohon.gameObject.SetActive(false);
     }
     private void ResetKeTanam()
     {
@@ -74,14 +88,15 @@ public class SpotPohon : MonoBehaviour
         pohonAsli.SetActive(true);
         stateSaatIni = stateSpotPohon.Tanam;
         Tanam();
+        darahPohon.setMaxDarah(Mydarah);
     }
     public void startTumbuh()
     {
-        pohonGhaib.SetActive(true);
         pohonAsli.SetActive(true);
-        pohonAsli.transform.localScale = Vector3.one * ukuranRandom;
-        stateSaatIni = stateSpotPohon.Tumbuh;
         pohonGhaib.SetActive(false);
+        Tumbuh();
+        Mydarah /= 2;
+        darahPohon.setMaxDarah(Mydarah);
     }
 
     public void masukLokasiTanam(Collider other)
@@ -91,7 +106,7 @@ public class SpotPohon : MonoBehaviour
         diLokasi = true;
         string alatSekarang = other.GetComponent<PlayerController>().alat;
 
-        if (stateSaatIni == stateSpotPohon.Tumbuh)
+        if (stateSaatIni == stateSpotPohon.Tumbuh || stateSaatIni == stateSpotPohon.Tanam)
         {
             darahPohon.gameObject.SetActive(true);
         }
@@ -139,6 +154,7 @@ public class SpotPohon : MonoBehaviour
 
         return posisiDasar;
     }
+    
 
     public void Tertanam()
     {
@@ -189,16 +205,25 @@ public class SpotPohon : MonoBehaviour
 
     public void Tanam()
     {
-        pohonAsli.transform.localScale = Vector3.one * 0.1f;
+        pohonAsli.transform.localScale = Vector3.zero;
+        Vector3 targetScale = originalScale * (ukuranRandom / 2f);
+        pohonAsli.LeanScale(targetScale, 2f)
+            .setEase(LeanTweenType.easeInOutBack);
         spotPohonManager.GantiStatePohon(gameObject.name, "Tanam");
+        darahPohon.setMaxDarah(Mydarah);
     }
 
     public void Tumbuh()
     {
-        pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 4f)
+        LeanTween.cancel(pohonAsli.gameObject);
+        pohonAsli.transform.localScale = Vector3.zero;
+        Vector3 targetScale = originalScale * ukuranRandom;
+        pohonAsli.LeanScale(targetScale, 2f)
             .setEase(LeanTweenType.easeInOutBack);
         stateSaatIni = stateSpotPohon.Tumbuh;
         spotPohonManager.GantiStatePohon(gameObject.name, "Tumbuh");
+        Mydarah *= 2;
+        darahPohon.setMaxDarah(Mydarah);
     }
     public bool IsValidTarget()
     {

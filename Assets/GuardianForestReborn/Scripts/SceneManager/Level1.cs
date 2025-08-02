@@ -12,6 +12,8 @@ public class Level : MonoBehaviour
     [SerializeField] private int EnemyMaxSpawn;
     [Header("Max Musuh Pada Saat Bersamaan")]
     [SerializeField] private int EnemyMaxSpawnSameTime;
+    [Header("Darah Pohon Tumbuh (Tanam hanya setengahnya)")]
+    [SerializeField] private float DarahPohon;
 
     MusuhManager musuhManager;
     SpotPohonManager spotPohonManager;
@@ -40,8 +42,7 @@ public class Level : MonoBehaviour
     IEnumerator Delaybasic()
     {
         yield return new WaitForSeconds(1f);
-        spotPohonManager.KeperluanLevel(FireSpawn);
-        spotPohonManager.SetData(data);
+        spotPohonManager.KeperluanLevel(FireSpawn, DarahPohon, data);
     }
     IEnumerator DelaySpawnMusuh()
     {
