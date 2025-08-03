@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/GuardianForestReborn/Scenes/MainScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/GuardianForestReborn/Scenes/AsyncScene.unity
+    guid: cb09e32490fc3ae4a96b0c659fff61b5
+  - enabled: 1
+    path: Assets/GuardianForestReborn/Scenes/_MainMenu/MainMenu.unity
+    guid: b34ca7fa986e59840b11cf1e4a14b665
+  - enabled: 1
+    path: Assets/GuardianForestReborn/Scenes/Level 1 - Edited.unity
+    guid: ac798a8c6d692144bb9cf576b6ba35ec
   m_configObjects: {}

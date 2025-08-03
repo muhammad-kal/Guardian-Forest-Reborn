@@ -56,3 +56,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: LoadingScene
+    uniqueID: 3757528411
+    locked: 0

@@ -113,7 +113,7 @@ public class SpotPohon : MonoBehaviour
 
         if (alatSekarang == "Bibit")
         {
-            Debug.Log("c");
+            
             if (stateSaatIni == stateSpotPohon.TidakTanam)
             {
                 pohonGhaib.SetActive(true);
