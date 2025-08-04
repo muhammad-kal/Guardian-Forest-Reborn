@@ -359,9 +359,7 @@ MonoBehaviour:
   - {fileID: -8812193265496378}
   - {fileID: -7782214113319332357}
   - {fileID: 5388815472584330576}
-  - {fileID: 5735133307215270155}
   - {fileID: -2313721490222965508}
-  - {fileID: 6867084945301937039}
   - {fileID: -9087097241552571848}
 --- !u!114 &5388815472584330576
 MonoBehaviour:
@@ -386,88 +384,8 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   smoothness:
-    m_OverrideState: 0
-    m_Value: 0.2
+    m_OverrideState: 1
+    m_Value: 0.01
   rounded:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &5735133307215270155
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 558a8e2b6826cf840aae193990ba9f2e, type: 3}
-  m_Name: ShadowsMidtonesHighlights
-  m_EditorClassIdentifier: 
-  active: 1
-  shadows:
-    m_OverrideState: 0
-    m_Value: {x: 0.929211, y: 0.9686581, z: 1, w: -0.08431703}
-  midtones:
-    m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0.25524154}
-  highlights:
-    m_OverrideState: 1
-    m_Value: {x: 1, y: 0.96013296, z: 0.7446962, w: 0.8373208}
-  shadowsStart:
-    m_OverrideState: 0
-    m_Value: 0
-  shadowsEnd:
-    m_OverrideState: 0
-    m_Value: 0.39
-  highlightsStart:
-    m_OverrideState: 0
-    m_Value: 0.55
-  highlightsEnd:
-    m_OverrideState: 0
-    m_Value: 1
---- !u!114 &6867084945301937039
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
-  m_Name: DepthOfField
-  m_EditorClassIdentifier: 
-  active: 1
-  mode:
-    m_OverrideState: 1
-    m_Value: 2
-  gaussianStart:
-    m_OverrideState: 1
-    m_Value: 40.7
-  gaussianEnd:
-    m_OverrideState: 1
-    m_Value: 90.25
-  gaussianMaxRadius:
-    m_OverrideState: 0
-    m_Value: 1
-  highQualitySampling:
-    m_OverrideState: 0
-    m_Value: 0
-  focusDistance:
-    m_OverrideState: 1
-    m_Value: 6.62
-  aperture:
-    m_OverrideState: 1
-    m_Value: 4.4
-  focalLength:
-    m_OverrideState: 1
-    m_Value: 80
-  bladeCount:
-    m_OverrideState: 1
-    m_Value: 9
-  bladeCurvature:
-    m_OverrideState: 1
-    m_Value: 1
-  bladeRotation:
-    m_OverrideState: 0
-    m_Value: -180

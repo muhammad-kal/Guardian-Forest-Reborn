@@ -54,7 +54,9 @@ Material:
     - Vector1_1e7704ebd5584b06be5b311be89b08c3: 0.2
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    m_Colors:
+    - _Warna: {r: 0, g: 1, b: 0.31372547, a: 0}
+    - _Warna2: {r: 0, g: 1, b: 0.3649037, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3389835427985338952
 MonoBehaviour:
