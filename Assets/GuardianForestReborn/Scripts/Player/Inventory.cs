@@ -37,7 +37,6 @@ public class Inventory : MonoBehaviour
                 {
                     AmbilItemLangsung(other);
                 }
-
                 lastItemTag = other.tag;
             }
         }
