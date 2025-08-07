@@ -80,15 +80,17 @@ public class PlayerController : MonoBehaviour
             Vector3 pergerakan = new Vector3(analog.GetBergerak.x * kecepatan * Time.deltaTime / Screen.width, transform.position.y, transform.position.z);
             pergerakan.y = 0;
             pergerakan.z = 0;
+            pergerakan.x = Mathf.Clamp(pergerakan.x, -0.2f, 0.2f);
+
 
             if (pergerakan.x > 0)
-            {
-                Flip(90, semuaPartikel);
-            }
-            else if (pergerakan.x < 0)
-            {
-                Flip(270, semuaPartikel);
-            }
+                {
+                    Flip(90, semuaPartikel);
+                }
+                else if (pergerakan.x < 0)
+                {
+                    Flip(270, semuaPartikel);
+                }
             karakterKontroller.Move(pergerakan);
             playerAnimator.AnimasiManager(pergerakan);
             jalanotomatis = false;
