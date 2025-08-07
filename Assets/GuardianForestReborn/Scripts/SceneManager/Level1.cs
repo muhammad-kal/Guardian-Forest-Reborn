@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
-    [Header("Jeda Sebelum Musuh Muncul")]
-    [SerializeField] private float EnemySpawn;
+    [Header("Jeda Sebelum Game Dimulai")]
+    [SerializeField] private float GameStart;
     [Header("Waktu Sebelum Terbakar")]
     [SerializeField] private float FireSpawn;
     [Header("Max Musuh Di Level")]
@@ -33,7 +33,7 @@ public class Level : MonoBehaviour
     {
         tanpadelay();
         StartCoroutine(Delaybasic());
-        StartCoroutine(DelaySpawnMusuh());
+        StartCoroutine(DelayGame());
     }
     private void tanpadelay()
     {
@@ -44,11 +44,13 @@ public class Level : MonoBehaviour
         yield return new WaitForSeconds(1f);
         spotPohonManager.KeperluanLevel(FireSpawn, DarahPohon, data);
     }
-    IEnumerator DelaySpawnMusuh()
+    IEnumerator DelayGame()
     {
-        yield return new WaitForSeconds(EnemySpawn);
+        yield return new WaitForSeconds(GameStart);
+        Debug.Log("Game Dimulai");
         musuhManager.BolehSpawn = true;
         musuhManager.KeperluanLevel(EnemyMaxSpawn, EnemyMaxSpawnSameTime);
+        spotPohonManager.Gamestart();
     }
     public void GameSelesai()
     {

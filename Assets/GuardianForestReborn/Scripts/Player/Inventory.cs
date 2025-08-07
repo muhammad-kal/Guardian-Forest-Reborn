@@ -47,11 +47,13 @@ public class Inventory : MonoBehaviour
     {
         if (IsItemTag(other.tag))
         {
+            if (lastItemTag == other.tag)
+                lastItemTag = null;
             if (ambilItemCoroutine != null)
-            {
-                StopCoroutine(ambilItemCoroutine);
-                ambilItemCoroutine = null;
-            }
+                {
+                    StopCoroutine(ambilItemCoroutine);
+                    ambilItemCoroutine = null;
+                }
         }
     }
 

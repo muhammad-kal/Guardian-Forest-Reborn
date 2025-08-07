@@ -29,6 +29,7 @@ public class SpotPohon : MonoBehaviour
     public bool diLokasi = false;
     private bool isterbakar = false;
     public bool sudahDeteksiApi = false;
+    private bool bolehupgrade = true;
     private List<GameObject> musuhYangMenarget = new List<GameObject>();
     [SerializeField] private Transform titikApi;
     private GameObject ApiChild;
@@ -36,7 +37,6 @@ public class SpotPohon : MonoBehaviour
     private float Mydarah;
     private void Start()
     {
-        // Inisialisasi nilai awal (berlaku untuk semua scene)
         tinggiCustom = UnityEngine.Random.Range(2, 5);
         ukuranRandom = UnityEngine.Random.Range(0.3f, 0.6f);
         pohonAsli.SetActive(false);
@@ -46,6 +46,10 @@ public class SpotPohon : MonoBehaviour
         Rigidbody rb = gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = true; // agar tidak jatuh
         originalScale = pohonAsli.transform.localScale;
+    }
+    public void Gamestart()
+    {
+        bolehupgrade = false;
     }
     public void SetDarah(float DarahBaru)
     {
@@ -159,7 +163,7 @@ public class SpotPohon : MonoBehaviour
 
     public void Tertanam()
     {
-        if (diLokasi)
+        if (diLokasi && bolehupgrade)
         {
             pohonGhaib.SetActive(false);
             pohonAsli.SetActive(true);
@@ -182,7 +186,7 @@ public class SpotPohon : MonoBehaviour
             MatikanApi();
         else
         {
-            if (diLokasi && stateSaatIni == stateSpotPohon.Tanam)
+            if (diLokasi && stateSaatIni == stateSpotPohon.Tanam && bolehupgrade)
             {
                 Tumbuh();
             }

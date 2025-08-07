@@ -26,6 +26,13 @@ public class SpotPohonManager : MonoBehaviour
         darah = maxDarah;
         SetData(data);
     }
+    public void Gamestart()
+    {
+        foreach (var pohon in semuaPohon)
+        {
+            pohon.Gamestart();
+        }
+    }
     public void SetData(SaveData data)
     {
         DataStateSemuaPohon = data;

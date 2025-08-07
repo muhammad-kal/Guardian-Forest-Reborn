@@ -836,9 +836,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93b80eaa9e6db0c4090157b451992679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemySpawn: 0
+  GameStart: 10
   FireSpawn: 2
-  EnemyMaxSpawn: 0
+  EnemyMaxSpawn: 10
   EnemyMaxSpawnSameTime: 3
   DarahPohon: 1
 --- !u!1 &152111140
