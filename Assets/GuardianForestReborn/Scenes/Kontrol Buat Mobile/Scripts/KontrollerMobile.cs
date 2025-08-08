@@ -81,8 +81,11 @@ public class KontrollerMobile : MonoBehaviour
         Vector3 posisiKlikSaatIni = Input.mousePosition;
         Vector3 arah = posisiKlikSaatIni - posisiKlikAwal;
 
-        magnitudePergerakan = arah.magnitude * sensitivitas / Screen.width;
-        magnitudePergerakan = Mathf.Min(magnitudePergerakan, analogOutline.rect.width / 2);
+        float sensitivitasDisesuaikan = sensitivitas * (Screen.height / 1080f);
+        magnitudePergerakan = arah.magnitude * sensitivitasDisesuaikan / Screen.height;
+
+        float maxMagnitude = analogOutline.rect.width * analogOutline.lossyScale.x / 2f;
+        magnitudePergerakan = Mathf.Min(magnitudePergerakan, maxMagnitude);
 
         bergerak = magnitudePergerakan * arah.normalized;
         Vector3 posisiTarget = bergerak + posisiKlikAwal;
@@ -91,6 +94,7 @@ public class KontrollerMobile : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
             HideAnalog();
+
     }
 
     //[Header("Elements")]

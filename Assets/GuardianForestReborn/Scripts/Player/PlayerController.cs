@@ -92,7 +92,6 @@ public class PlayerController : MonoBehaviour
                 {
                     Flip(270, semuaPartikel);
                 }
-            Debug.Log(pergerakan.x);
             karakterKontroller.Move(pergerakan);
             playerAnimator.AnimasiManager(pergerakan);
             jalanotomatis = false;
