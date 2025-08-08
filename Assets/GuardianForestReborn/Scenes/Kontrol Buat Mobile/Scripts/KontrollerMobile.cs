@@ -45,7 +45,6 @@ public class KontrollerMobile : MonoBehaviour
         posisiKlikAwal = Input.mousePosition;
         analogOutline.transform.position = posisiKlikAwal;
         ShowAnalog();
-
     }
 
     private void ShowAnalog()
