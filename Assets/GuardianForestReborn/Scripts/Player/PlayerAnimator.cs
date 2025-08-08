@@ -47,18 +47,37 @@ public class PlayerAnimator : MonoBehaviour
     }
     public void AnimasiManagerOtomatis(Vector3 pergerakan)
     {
-        float kecepatanGerak = pergerakan.magnitude * 100;
+        //float kecepatanGerak = pergerakan.magnitude * 100;
 
-        if (kecepatanGerak > 0.1f)
+        //if (kecepatanGerak > 0.1f)
+        //{
+        //    if (kecepatanGerak >= 20f)
+        //    {
+        //        animator.SetFloat("animasiKecepatan", pergerakan.magnitude * kecepatanAnimasi);
+        //        PlayAnimasiLari();
+        //    }
+        //    else
+        //    {
+        //        animator.SetFloat("animasiKecepatan", pergerakan.magnitude * kecepatanAnimasi + 0.5f);
+        //        PlayAnimasiJalan();
+        //    }
+        //}
+        //else
+        //{
+        //    PlayAnimasiDiem();
+        //}
+        float inputSpeed = Mathf.Clamp01(analog.magnitudePergerakan / 100f);
+
+        if (inputSpeed > 0f)
         {
-            if (kecepatanGerak >= 20f)
+            animator.SetFloat("animasiKecepatan", inputSpeed * kecepatanAnimasi);
+
+            if (inputSpeed > 0.6f) // threshold lari
             {
-                animator.SetFloat("animasiKecepatan", pergerakan.magnitude * kecepatanAnimasi);
                 PlayAnimasiLari();
             }
             else
             {
-                animator.SetFloat("animasiKecepatan", pergerakan.magnitude * kecepatanAnimasi + 0.5f);
                 PlayAnimasiJalan();
             }
         }

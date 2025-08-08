@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             Vector3 pergerakan = new Vector3(analog.GetBergerak.x * kecepatan * Time.deltaTime / Screen.width, transform.position.y, transform.position.z);
+            //Vector3 pergerakan = new Vector3(analog.GetBergerak.x * kecepatan * Time.deltaTime, 0, 0);
             pergerakan.y = 0;
             pergerakan.z = 0;
             pergerakan.x = Mathf.Clamp(pergerakan.x, -0.2f, 0.2f);

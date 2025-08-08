@@ -11,6 +11,7 @@ public class MainMenu_Manager : MonoBehaviour
     [SerializeField] private float floatHeight = 10f; 
     [SerializeField] private float floatDuration = 2f; 
     [SerializeField] private LeanTweenType easeType = LeanTweenType.easeInOutSine;
+    [SerializeField] private Animator animator;
 
     [Header("FPS")]
     [SerializeField] private TextMeshProUGUI fps;
@@ -49,6 +50,23 @@ public class MainMenu_Manager : MonoBehaviour
 
     public void Lanjut()
     {
+        StartCoroutine(LerpLayerWeight(1, 0f, 0.4f, 1f));
+        animator.SetTrigger("Berdiri"); // tetap pakai trigger biar animasi transisi jalan
+    }
+
+    IEnumerator LerpLayerWeight(int layerIndex, float start, float end, float duration)
+    {
+        float t = 0;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float weight = Mathf.Lerp(start, end, t / duration);
+            animator.SetLayerWeight(layerIndex, weight);
+            yield return null;
+        }
+        animator.SetLayerWeight(layerIndex, end);
+        yield return new WaitForSeconds(1.2f);
         FindAnyObjectByType<LoadingManagerScript>().LoadGame();
     }
+
 }
