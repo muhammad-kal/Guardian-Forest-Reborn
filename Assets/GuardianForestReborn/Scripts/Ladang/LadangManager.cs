@@ -27,6 +27,7 @@ public class LadangManager : MonoBehaviour
     {
         GetSemuaTanah();
         state = LadangState.Kosong;
+        
     }
 
     [NaughtyAttributes.Button]
@@ -67,8 +68,10 @@ public class LadangManager : MonoBehaviour
 
     public void BibitTertanam(Vector3[] posisiBibit)
     {
+        Debug.Log("Masuk Function");
         for (int i = 0; i < posisiBibit.Length; i++)
         {
+            Debug.Log("Masuk Looping");
             TanahLadang tanahTerdekat = GetPosisiLadangTerdekat(posisiBibit[i]);
 
             if(!tanahTerdekat)
@@ -108,6 +111,7 @@ public class LadangManager : MonoBehaviour
 
     private void TaburBibit(TanahLadang tanahLadang)
     {
+        Debug.Log("Tertanam!!");
         jumlahBibitCounter++;
         tanahLadang.TaburBibit(dataTanaman);
         if(jumlahBibitCounter >= listTanahLadang.Count)

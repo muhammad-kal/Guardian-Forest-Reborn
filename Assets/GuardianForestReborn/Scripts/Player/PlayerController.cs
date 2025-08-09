@@ -201,9 +201,9 @@ public class PlayerController : MonoBehaviour
                 else
                     playerSkillMenanam.MenanamPohon(other.GetComponentInParent<SpotPohon>());
             }
-            else if (other.gameObject.name == "Ladang")
+            else if (other.gameObject.name == "TanahLadangZone")
             {
-                playerSkillMenanam.Menanam(other.GetComponent<LadangManager>());
+                playerSkillMenanam.Menanam(other.GetComponentInParent<LadangManager>());
             }
         }
         else if (alat == "Gembor")
@@ -215,9 +215,9 @@ public class PlayerController : MonoBehaviour
                 else
                     playerSkillMenyiram.MenyiramApi(other.GetComponentInParent<SpotPohon>());
             }
-            else if (other.gameObject.name == "Ladang")
+            else if (other.gameObject.name == "TanahLadangZone")
             {
-                playerSkillMenyiram.Menyiram(other.GetComponent<LadangManager>());
+                playerSkillMenyiram.Menyiram(other.GetComponentInParent<LadangManager>());
             }
         }
     }

@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+
+
 
 [RequireComponent(typeof(PlayerAnimator))]
-[RequireComponent (typeof(PlayerAlatSelctor))]
-public class PlayerSkillMenanam : MonoBehaviour
+[RequireComponent(typeof(PlayerAlatSelctor))]
+public class Player : MonoBehaviour
 {
     [Header("Elements")]
     private PlayerAnimator animatorController;
@@ -19,7 +20,7 @@ public class PlayerSkillMenanam : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
         animatorController = GetComponent<PlayerAnimator>();
         playerAlatSelector = GetComponent<PlayerAlatSelctor>();
         playerController = GetComponent<PlayerController>();
@@ -44,12 +45,12 @@ public class PlayerSkillMenanam : MonoBehaviour
     private void AlatTerpilihCallback(PlayerAlatSelctor.Alat alatTerpilih)
     {
         if (!playerAlatSelector.PilihBibit())
-            BerhentiMenanam(); 
+            BerhentiMenanam();
     }
 
     private void BibitCollidedCallback(Vector3[] posisiBibit)
     {
-        if (playerController.lokasiSaatIni() == "TanahLadangZone")
+        if (playerController.lokasiSaatIni() == "Ladang")
         {
             if (ladangManager)
                 ladangManager.BibitTertanam(posisiBibit);
@@ -64,7 +65,7 @@ public class PlayerSkillMenanam : MonoBehaviour
     }
     private void SemuaLadangTertanamCallback(LadangManager ladang)
     {
-        if(ladang == ladangManager)
+        if (ladang == ladangManager)
         {
             animatorController.StopMenanam();
         }
@@ -73,7 +74,7 @@ public class PlayerSkillMenanam : MonoBehaviour
     public void Menanam(LadangManager other)
     {
 
-        if (other.tag == "Ladang" && other.GetComponent<LadangManager>().isLadangKosong() && /*playerAlatSelector.PilihBibit()*/ playerController.alat == "Bibit"  && playerController.actionActive)
+        if (other.tag == "Ladang" && other.GetComponent<LadangManager>().isLadangKosong() && playerAlatSelector.PilihBibit() && playerController.actionActive)
         {
             animatorController.PlayMenanam();
             ladangManager = other.GetComponent<LadangManager>();
@@ -124,7 +125,7 @@ public class PlayerSkillMenanam : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.tag == "Ladang")
+        if (other.tag == "Ladang")
         {
             animatorController.StopMenanam();
             ladangManager = null;

@@ -21,6 +21,22 @@ public class TanahLadang : MonoBehaviour
         state = LadangState.Kosong;
     }
 
+
+    public void masukLokasiKebon(Collider other)
+    {
+        //FindAnyObjectByType<PlayerSkillMenanam>().Menanam(GetComponentInParent<LadangManager>());
+        Debug.Log("Masuk Kebon");
+        //GetComponentInParent<LadangManager>().playerDikebun = true;
+    }
+
+    public void keluarLokasiKebon(Collider other)
+    {
+        Debug.Log("Keluar Kebon!");
+        //GetComponentInParent<LadangManager>().playerDikebun = false;
+
+
+    }
+
     public void TaburBibit(TanamanData dataTanaman)
     {
         state = LadangState.Tertanam;

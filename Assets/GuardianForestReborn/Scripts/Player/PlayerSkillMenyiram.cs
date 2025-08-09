@@ -50,7 +50,7 @@ public class PlayerSkillMenyiram : MonoBehaviour
 
     private void AirCollidedCallback(Vector3[] posisiAir)
     {
-        if (playerController.lokasiSaatIni() == "Ladang")
+        if (playerController.lokasiSaatIni() == "TanahLadangZone")
         {
             if (ladangManager)
                 ladangManager.AirTersiram(posisiAir);
@@ -75,7 +75,7 @@ public class PlayerSkillMenyiram : MonoBehaviour
     public void Menyiram(LadangManager other)
     {
 
-        if (other.tag == "Ladang" && other.GetComponent<LadangManager>().isLadangPenuh() && playerAlatSelector.PilihSiram() && playerController.actionActive)
+        if (other.tag == "Ladang" && other.GetComponent<LadangManager>().isLadangPenuh() && /*playerAlatSelector.PilihSiram()*/ playerController.alat == "Gembor" && playerController.actionActive)
         {
             animatorController.PlayMenyiram();
             ladangManager = other.GetComponent<LadangManager>();
