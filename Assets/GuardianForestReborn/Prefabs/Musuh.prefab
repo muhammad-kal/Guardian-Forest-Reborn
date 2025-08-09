@@ -509,6 +509,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pembakar_Renderer
       objectReference: {fileID: 0}
+    - target: {fileID: 2664098864995057252, guid: be19ea68ccea7074b8f42024ac4d19e0,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c933210913b45244fa0485287fc7e2c1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
