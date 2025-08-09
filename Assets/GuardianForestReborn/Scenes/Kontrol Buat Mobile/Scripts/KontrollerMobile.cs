@@ -21,6 +21,7 @@ public class KontrollerMobile : MonoBehaviour
 
     [HideInInspector] public Vector3 GetBergerak => bergerak;
     [HideInInspector] public float magnitudePergerakan;
+    [HideInInspector] public float maxMagnitude;
     private UnityEngine.UI.Image imageAnalogOutline;
     private UnityEngine.UI.Image imagePentil;
 
@@ -78,14 +79,20 @@ public class KontrollerMobile : MonoBehaviour
 
     private void ControlAnalog()
     {
+        // Debug.Log(Screen.height);
         Vector3 posisiKlikSaatIni = Input.mousePosition;
         Vector3 arah = posisiKlikSaatIni - posisiKlikAwal;
 
-        float sensitivitasDisesuaikan = sensitivitas * (Screen.height / 1080f);
-        magnitudePergerakan = arah.magnitude * sensitivitasDisesuaikan / Screen.height;
+        float heightMin = Mathf.Max(Screen.height, 1080f);
 
-        float maxMagnitude = analogOutline.rect.width * analogOutline.lossyScale.x / 2f;
+        float sensitivitasDisesuaikan = sensitivitas * (heightMin / 1080f);
+        // Debug.Log(sensitivitasDisesuaikan);
+        magnitudePergerakan = arah.magnitude * sensitivitasDisesuaikan / heightMin;
+
+        maxMagnitude = analogOutline.rect.width * analogOutline.lossyScale.x / 2f;
+        // Debug.Log(maxMagnitude);
         magnitudePergerakan = Mathf.Min(magnitudePergerakan, maxMagnitude);
+        Debug.Log(magnitudePergerakan);
 
         bergerak = magnitudePergerakan * arah.normalized;
         Vector3 posisiTarget = bergerak + posisiKlikAwal;
@@ -94,7 +101,6 @@ public class KontrollerMobile : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
             HideAnalog();
-
     }
 
     //[Header("Elements")]

@@ -83,7 +83,6 @@ public class PlayerController : MonoBehaviour
             pergerakan.z = 0;
             pergerakan.x = Mathf.Clamp(pergerakan.x, -0.12f, 0.12f);
 
-
             if (pergerakan.x > 0)
                 {
                     Flip(90, semuaPartikel);

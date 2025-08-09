@@ -14,37 +14,57 @@ public class PlayerAnimator : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float kecepatanAnimasi;
+    
+    [SerializeField] float deadzone01 = 0.05f;   // 5% radius: cegah jitter
+    [SerializeField] float walkThresh01 = 0.25f; // >25% dianggap jalan
+    [SerializeField] float runThresh01  = 0.6f;  // >60% dianggap lari
+    [SerializeField] float damp = 0.1f;          // smoothing animator
 
     
     private void Start()
     {
-        
+
     }
 
     public void AnimasiManager(Vector3 pergerakan)
-    {
-        Vector3 Catcher = pergerakan * 100;
-        float normalisasiPergerakan = Mathf.Round(Catcher.magnitude);
-        
-        if (analog.magnitudePergerakan > 0)
-        {
-            //animator.transform.forward = pergerakan.normalized;
-            
-            if (analog.magnitudePergerakan > 60)
-            {
-                animator.SetFloat("animasiKecepatan", pergerakan.magnitude * kecepatanAnimasi );
-                PlayAnimasiLari();
-            }
-            else if (analog.magnitudePergerakan > 0)
-            {
-                animator.SetFloat("animasiKecepatan", pergerakan.magnitude * kecepatanAnimasi + .5f);
-                PlayAnimasiJalan();
-            }
+{
+    // 0..1 bebas resolusi
+    float speed01 = (analog.maxMagnitude > 0f)
+        ? Mathf.Clamp01(analog.magnitudePergerakan / analog.maxMagnitude)
+        : 0f;
 
+    if (speed01 > deadzone01)
+    {
+        // opsional: arahkan karakter
+        // if (pergerakan.sqrMagnitude > 0.0001f) animator.transform.forward = pergerakan.normalized;
+
+        // Skala kecepatan animasi dari 0..1 → 0..kecepatanAnimasi (bisa dikalikan lagi dengan faktor)
+        float animSpeed = speed01 * kecepatanAnimasi;
+
+        if (speed01 >= runThresh01)
+        {
+            animator.SetFloat("animasiKecepatan", animSpeed, damp, Time.deltaTime);
+            PlayAnimasiLari();
+        }
+        else if (speed01 >= walkThresh01)
+        {
+            // sedikit offset supaya jalan terasa “hidup”
+            animator.SetFloat("animasiKecepatan", animSpeed + 0.5f, damp, Time.deltaTime);
+            PlayAnimasiJalan();
         }
         else
-            PlayAnimasiDiem();
+        {
+            // masih di atas deadzone tapi di bawah walkThresh → merayap
+            animator.SetFloat("animasiKecepatan", animSpeed * 0.6f, damp, Time.deltaTime);
+            PlayAnimasiJalan();
+        }
     }
+    else
+    {
+        animator.SetFloat("animasiKecepatan", 0f, damp, Time.deltaTime);
+        PlayAnimasiDiem();
+    }
+}
     public void AnimasiManagerOtomatis(Vector3 pergerakan)
     {
         //float kecepatanGerak = pergerakan.magnitude * 100;
