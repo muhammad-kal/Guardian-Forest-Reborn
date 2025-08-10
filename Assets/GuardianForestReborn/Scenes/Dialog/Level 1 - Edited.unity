@@ -14019,11 +14019,6 @@ PrefabInstance:
       propertyPath: partikelAir
       value: 
       objectReference: {fileID: 1619466798}
-    - target: {fileID: 4472987983129517590, guid: a996e17b1599ee34495c08ef5585c42d,
-        type: 3}
-      propertyPath: kecepatanAnimasi
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4786558582124617175, guid: a996e17b1599ee34495c08ef5585c42d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
