@@ -6,6 +6,6 @@ public class TriggerManager : MonoBehaviour
 {
     public void Trigger()
     {
-        GetComponentInParent<Tutorial>().NextStep();
+        transform.root.GetComponent<Tutorial>().NextStep();
     }
 }

@@ -13,8 +13,6 @@ public class QuestTutorial : MonoBehaviour
         Quest Progress Class
      
      */
-
-
     [SerializeField] Image logo;
     [SerializeField] TextMeshProUGUI misiText;
     [SerializeField] Slider misiSlider;
@@ -27,10 +25,10 @@ public class QuestTutorial : MonoBehaviour
 
     private void Start()
     {
-        LeanTween.rotateAround(logo.gameObject, new Vector3 (0,1,0), 360, 2.5f).setLoopClamp();
+        LeanTween.rotateAround(logo.gameObject, new Vector3(0, 1, 0), 360, 2.5f).setLoopClamp();
     }
-
-    
-
-
+    public void SetText(string teks)
+    {
+        misiText.text = teks;
+    }
 }

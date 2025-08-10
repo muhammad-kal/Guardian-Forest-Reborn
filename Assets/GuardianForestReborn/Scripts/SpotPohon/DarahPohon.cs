@@ -24,7 +24,6 @@ public class DarahPohon : MonoBehaviour
         barDarah = transform.Find("Bar");
         setDarah(darah);
         gameObject.SetActive(false);
-
     }
 
     public void setDarah(float nilaiDarah)

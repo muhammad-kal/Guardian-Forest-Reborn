@@ -6,8 +6,9 @@ public class SpotPohonManagerTutorial : MonoBehaviour
 {
     [SerializeField] List<SpotPohonTutorial> semuaPohon;
     Tutorial tutorial = null;
-    private bool TutorialHanyaSekali = false;
     private JumlahPohon jumlahPohon;
+    private int tanam10x = 0;
+    private int siram10x = 0;
 
     private void Start()
     {
@@ -17,6 +18,7 @@ public class SpotPohonManagerTutorial : MonoBehaviour
         }
         jumlahPohon = FindObjectOfType<JumlahPohon>();
         jumlahPohon.SetNilai(3, 3);
+        tutorial = transform.root.GetComponent<Tutorial>();
     }
 
     public void Menanam()
@@ -106,36 +108,28 @@ public class SpotPohonManagerTutorial : MonoBehaviour
     {
 
     }
-    public void CekApakahSemuaPohonSudahTidakTerbakarTutorial()
-    {
-        foreach (var pohon in semuaPohon)
-        {
-            if (pohon != null && pohon.apakahTerbakar())
-            {
-                // Ada yang masih terbakar, keluar dari method
-                return;
-            }
-        }
-
-        // Semua pohon tidak terbakar, panggil NextStep() di root
-        tutorial = transform.root.GetComponent<Tutorial>();
-        if (tutorial != null)
-        {
-            tutorial.NextStep();
-            Debug.Log("annn");
-        }
-        else
-        {
-            Debug.LogWarning("Root tidak ditemukan untuk memanggil NextStep()");
-        }
-    }
     public void nextsteptutorial()
     {
-        if (!TutorialHanyaSekali)
+        tutorial?.NextStep();
+    }
+    public void GantiStatePohon(string name, string state)
+    {
+
+    }
+    public void Tanam10X()
+    {
+        tanam10x++;
+        if (tanam10x == 10)
         {
-            tutorial = transform.root.GetComponent<Tutorial>();
             tutorial.NextStep();
-            TutorialHanyaSekali = true;
-        } 
+        }
+    }
+    public void Siram10X()
+    {
+        siram10x++;
+        if (siram10x == 10)
+        {
+            tutorial.NextStep();
+        }
     }
 }

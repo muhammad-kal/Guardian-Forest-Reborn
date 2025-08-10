@@ -8,6 +8,7 @@ public class ApiTriggerTutorial : MonoBehaviour
     private SpotPohonTutorial spotPohon;
     private HashSet<Collider> apiAktif = new HashSet<Collider>();
     private Coroutine monitoringCoroutine;
+    public float waktuTunggu = 10f;
 
     private void Start()
     {
@@ -83,7 +84,6 @@ public class ApiTriggerTutorial : MonoBehaviour
 
     private IEnumerator TungguDanBakar()
     {
-        float waktuTunggu = 4f;
         yield return new WaitForSeconds(waktuTunggu);
 
         if (apiAktif.Count > 0)

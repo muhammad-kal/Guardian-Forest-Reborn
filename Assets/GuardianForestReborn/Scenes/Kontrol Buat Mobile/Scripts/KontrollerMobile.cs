@@ -86,13 +86,10 @@ public class KontrollerMobile : MonoBehaviour
         float heightMin = Mathf.Max(Screen.height, 1080f);
 
         float sensitivitasDisesuaikan = sensitivitas * (heightMin / 1080f);
-        // Debug.Log(sensitivitasDisesuaikan);
         magnitudePergerakan = arah.magnitude * sensitivitasDisesuaikan / heightMin;
 
         maxMagnitude = analogOutline.rect.width * analogOutline.lossyScale.x / 2f;
-        // Debug.Log(maxMagnitude);
         magnitudePergerakan = Mathf.Min(magnitudePergerakan, maxMagnitude);
-        Debug.Log(magnitudePergerakan);
 
         bergerak = magnitudePergerakan * arah.normalized;
         Vector3 posisiTarget = bergerak + posisiKlikAwal;

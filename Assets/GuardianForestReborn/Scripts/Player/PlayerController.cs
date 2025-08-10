@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private PlayerAlatSelctor playerAlatSelector;
     private PlayerSkillMenanam playerSkillMenanam;
     private PlayerSkillMenyiram playerSkillMenyiram;
-    private Inventory inventory;
+    private InventoryTutorial inventory;
 
     public string alat;
     private string LokasiSaatIni;
@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         playerAlatSelector = GetComponent<PlayerAlatSelctor>();
         playerSkillMenanam = GetComponent<PlayerSkillMenanam>();
         playerSkillMenyiram = GetComponent<PlayerSkillMenyiram>();
-        inventory = GetComponent<Inventory>();
+        inventory = GetComponent<InventoryTutorial>();
         inventory.onItemChanged = HandleItemChange;
 
         // playerAlatSelector.actionPilihAlat += AlatTerpilihCallback;
@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
     {
         jalanotomatis = false;
         TargetOtomatis = null;
-        transform.root.GetComponent<Tutorial>()?.NextStep();
+        // transform.root.GetComponent<Tutorial>()?.NextStep();
     }
     private void Jalanotomatis()
     {
@@ -195,7 +195,7 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.name == "TanamZone")
             {
-                if (currentSceneName == "Tutorial")
+                if (currentSceneName == "Level 1 - Tutorial")
                     playerSkillMenanam.MenanamPohonTutorial(other.GetComponentInParent<SpotPohonTutorial>());
                 else
                     playerSkillMenanam.MenanamPohon(other.GetComponentInParent<SpotPohon>());
@@ -209,7 +209,7 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.name == "TanamZone")
             {
-                if (currentSceneName == "Tutorial")
+                if (currentSceneName == "Level 1 - Tutorial")
                     playerSkillMenyiram.MenyiramApiTutorial(other.GetComponentInParent<SpotPohonTutorial>());
                 else
                     playerSkillMenyiram.MenyiramApi(other.GetComponentInParent<SpotPohon>());

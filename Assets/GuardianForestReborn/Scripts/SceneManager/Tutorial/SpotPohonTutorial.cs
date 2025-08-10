@@ -15,7 +15,6 @@ public class SpotPohonTutorial : MonoBehaviour
     [Header("Elements")]
     [SerializeField] private GameObject pohonAsli;
     [SerializeField] private GameObject pohonGhaib;
-    [SerializeField] private SpotPohonManager spotPohonManager;
     [SerializeField] private GameObject apiPrefab;
     [SerializeField] private DarahPohon darahPohon;
 
@@ -31,9 +30,13 @@ public class SpotPohonTutorial : MonoBehaviour
     public bool sudahDeteksiApi = false;
     private List<GameObject> musuhYangMenarget = new List<GameObject>();
     [SerializeField] private Transform titikApi;
+    private SpotPohonManagerTutorial spotPohonManagerTutorial;
     Tutorial tutorial = null;
+    private Vector3 originalScale;
+    private float Mydarah;
     private void Start()
     {
+        spotPohonManagerTutorial = GetComponentInParent<SpotPohonManagerTutorial>();
         // Inisialisasi nilai awal (berlaku untuk semua scene)
         tinggiCustom = UnityEngine.Random.Range(2, 5);
         ukuranRandom = UnityEngine.Random.Range(0.5f, 1f);
@@ -44,9 +47,12 @@ public class SpotPohonTutorial : MonoBehaviour
         Rigidbody rb = gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = true; // agar tidak jatuh
         tutorial = transform.root.GetComponent<Tutorial>();
-
-        if (gameObject.name != "SpotPohon")
-            TanamTutorial();
+        originalScale = pohonAsli.transform.localScale;
+        Mydarah = 1f;
+        if (gameObject.name == "SpotPohonTutorial (10)")
+        {
+            Terbakar();
+        }
     }
 
     private void TanamTutorial()
@@ -74,10 +80,10 @@ public class SpotPohonTutorial : MonoBehaviour
         diLokasi = true;
         string alatSekarang = other.GetComponent<PlayerController>().alat;
 
-        if (stateSaatIni == stateSpotPohon.Tumbuh)
-        {
-            darahPohon.gameObject.SetActive(true);
-        }
+        // if (stateSaatIni == stateSpotPohon.Tumbuh || stateSaatIni == stateSpotPohon.Tanam)
+        // {
+        //     darahPohon.gameObject.SetActive(true);
+        // }
 
         if (alatSekarang == "Bibit")
         {
@@ -103,10 +109,17 @@ public class SpotPohonTutorial : MonoBehaviour
     {
         if (!isterbakar)
         {
-            Vector3 posisiApi = GetPosisiApiDiAtasPohon();
+            UnityEngine.Vector3 posisiApi;
+            if (gameObject.name == "SpotPohonTutorial (10)")
+            {
+                posisiApi = GetPosisiApiApiUnggun();
+            }
+            else
+            {
+                posisiApi = GetPosisiApiDiAtasPohon();
+            }
             Instantiate(apiPrefab, posisiApi, Quaternion.identity, transform);
             isterbakar = true;
-            GetComponentInParent<SpotPohonManagerTutorial>().nextsteptutorial();
             PerintahkanSemuaMusuhGantiTarget();
         }
     }
@@ -123,10 +136,16 @@ public class SpotPohonTutorial : MonoBehaviour
 
         return posisiDasar;
     }
+    private Vector3 GetPosisiApiApiUnggun()
+    {
+        Vector3 posisi = pohonAsli.transform.position;
+        posisi.y += 2;
+        return posisi;
+    }
 
     public void Tertanam()
     {
-        if (diLokasi)
+        if (diLokasi && gameObject.name != "SpotPohonTutorial (10)")
         {
             pohonGhaib.SetActive(false);
             pohonAsli.SetActive(true);
@@ -149,7 +168,7 @@ public class SpotPohonTutorial : MonoBehaviour
             MatikanApi();
         else
         {
-            if (diLokasi && stateSaatIni == stateSpotPohon.Tanam)
+            if (diLokasi && stateSaatIni == stateSpotPohon.Tanam && gameObject.name != "SpotPohonTutorial (10)")
             {
                 Tumbuh();
             }
@@ -169,25 +188,32 @@ public class SpotPohonTutorial : MonoBehaviour
             }
         }
         isterbakar = false;
-        GetComponentInParent<SpotPohonManagerTutorial>().CekApakahSemuaPohonSudahTidakTerbakarTutorial();
+        spotPohonManagerTutorial.nextsteptutorial();
     }
 
     public void Tanam()
     {
-        pohonAsli.transform.localScale = Vector3.one * 0.1f;
-        if (gameObject.name == "SpotPohon")
-            tutorial.NextStep();
-        Debug.Log("tanam");
+        pohonAsli.transform.localScale = Vector3.zero;
+        Vector3 targetScale = originalScale * (ukuranRandom / 2f);
+        pohonAsli.LeanScale(targetScale, 2f)
+            .setEase(LeanTweenType.easeInOutBack);
+        spotPohonManagerTutorial.GantiStatePohon(gameObject.name, "Tanam");
+        darahPohon.setMaxDarah(Mydarah);
+        spotPohonManagerTutorial.Tanam10X();
     }
 
     public void Tumbuh()
     {
-        pohonAsli.gameObject.LeanScale(Vector3.one * ukuranRandom, 4f)
+        LeanTween.cancel(pohonAsli.gameObject);
+        pohonAsli.transform.localScale = Vector3.zero;
+        Vector3 targetScale = originalScale * ukuranRandom;
+        pohonAsli.LeanScale(targetScale, 2f)
             .setEase(LeanTweenType.easeInOutBack);
         stateSaatIni = stateSpotPohon.Tumbuh;
-        if (gameObject.name == "SpotPohon")
-            tutorial.NextStep();
-        Debug.Log("tumbuh");
+        // spotPohonManagerTutorial.GantiStatePohon(gameObject.name, "Tumbuh");
+        Mydarah *= 2;
+        darahPohon.setMaxDarah(Mydarah);
+        spotPohonManagerTutorial.Siram10X();
     }
     public bool IsValidTarget()
     {
