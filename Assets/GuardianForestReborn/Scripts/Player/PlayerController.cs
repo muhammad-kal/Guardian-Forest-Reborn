@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour
     private PlayerAlatSelctor playerAlatSelector;
     private PlayerSkillMenanam playerSkillMenanam;
     private PlayerSkillMenyiram playerSkillMenyiram;
-    private InventoryTutorial inventory;
+    private Inventory inventory;
+    private InventoryTutorial inventoryTutorial;
 
     public string alat;
     private string LokasiSaatIni;
@@ -36,8 +37,10 @@ public class PlayerController : MonoBehaviour
         playerAlatSelector = GetComponent<PlayerAlatSelctor>();
         playerSkillMenanam = GetComponent<PlayerSkillMenanam>();
         playerSkillMenyiram = GetComponent<PlayerSkillMenyiram>();
-        inventory = GetComponent<InventoryTutorial>();
+        inventory = GetComponent<Inventory>();
+        inventoryTutorial = GetComponent<InventoryTutorial>();
         inventory.onItemChanged = HandleItemChange;
+        inventoryTutorial.onItemChanged = HandleItemChange;
 
         // playerAlatSelector.actionPilihAlat += AlatTerpilihCallback;
         GameObject rootObject = transform.root.gameObject;
