@@ -28,9 +28,15 @@ public class DialogueTrigger : MonoBehaviour
     public Dialogue dialogue;
     void Start()
     {
-        TriggerDialogue();
+        StartCoroutine(DelayLoadNextCoroutine(2));
     }
 
+private IEnumerator DelayLoadNextCoroutine(float delaySeconds)
+{
+    yield return new WaitForSeconds(delaySeconds);
+
+    TriggerDialogue();
+}
     public void TriggerDialogue()
     {
         DialogueManager.Instance.StartDialogue(dialogue);

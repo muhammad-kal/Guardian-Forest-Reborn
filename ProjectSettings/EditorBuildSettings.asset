@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GuardianForestReborn/Scenes/Level 1 - Edited.unity
     guid: ac798a8c6d692144bb9cf576b6ba35ec
+  - enabled: 1
+    path: Assets/GuardianForestReborn/Scenes/Tutorial/Level 1 - Tutorial.unity
+    guid: d088deeed75d93943aabe0d0615e197e
   m_configObjects: {}

@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private string LokasiSaatIni;
     private Transform TargetOtomatis;
     private bool jalanotomatis = false;
-    private string currentSceneName;
+    private string TutorialOrGame;
 
 
 
@@ -47,12 +47,7 @@ public class PlayerController : MonoBehaviour
         {
             inventoryTutorial.onItemChanged = HandleItemChange;
         }
-
-
-        // playerAlatSelector.actionPilihAlat += AlatTerpilihCallback;
-        GameObject rootObject = transform.root.gameObject;
-
-        currentSceneName = SceneManager.GetActiveScene().name;
+        TutorialOrGame = FindAnyObjectByType<LoadingManagerScript>().CurrentScene;
     }
     void HandleItemChange(string item)
     {
@@ -205,7 +200,7 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.name == "TanamZone")
             {
-                if (currentSceneName == "Level 1 - Tutorial")
+                if (TutorialOrGame == "Tutorial")
                     playerSkillMenanam.MenanamPohonTutorial(other.GetComponentInParent<SpotPohonTutorial>());
                 else
                     playerSkillMenanam.MenanamPohon(other.GetComponentInParent<SpotPohon>());
@@ -219,7 +214,7 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.name == "TanamZone")
             {
-                if (currentSceneName == "Level 1 - Tutorial")
+                if (TutorialOrGame == "Tutorial")
                     playerSkillMenyiram.MenyiramApiTutorial(other.GetComponentInParent<SpotPohonTutorial>());
                 else
                     playerSkillMenyiram.MenyiramApi(other.GetComponentInParent<SpotPohon>());

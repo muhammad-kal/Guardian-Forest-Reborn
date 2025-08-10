@@ -12,7 +12,7 @@ public class LoadingManagerScript : MonoBehaviour
     [SerializeField]private Slider loadingBar;
     [SerializeField] private GameObject loadingBar2;
     [SerializeField] private Material skyboxGame;
-
+    public string CurrentScene;
 
     private void Start()
     {
@@ -33,10 +33,21 @@ public class LoadingManagerScript : MonoBehaviour
     {
         loadingScene.SetActive(true);
         scenesLoading.Add(SceneManager.UnloadSceneAsync(1));
-        scenesLoading.Add(SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive));
+        scenesLoading.Add(SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive));
+        CurrentScene = "Tutorial";
 
         StartCoroutine(GetSceneLoadProgress());
     }
+    public void TutorialToGame()
+    {
+        loadingScene.SetActive(true);
+        scenesLoading.Add(SceneManager.UnloadSceneAsync(3));
+        scenesLoading.Add(SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive));
+        CurrentScene = "Game";
+
+        StartCoroutine(GetSceneLoadProgress());
+    }
+
 
     float totalSceneProgress;
     public IEnumerator GetSceneLoadProgress()

@@ -56,7 +56,7 @@ public class Tutorial : MonoBehaviour
                 trigger++;
                 break;
             case 8:
-                Debug.Log("Next Scene");
+                FindAnyObjectByType<LoadingManagerScript>().TutorialToGame();
                 break;
         }
     }

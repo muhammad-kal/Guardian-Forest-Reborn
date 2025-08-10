@@ -39,7 +39,7 @@ public class SaveData
             listEntity.Add(new EntityState
             {
                 nama = $"SpotPohon ({i})",
-                state = (i == 24) ? "Tanam" : "Tidak Tanam"
+                state = "Tanam"
             });
         }
 
